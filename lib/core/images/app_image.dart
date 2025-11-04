@@ -42,5 +42,9 @@ class AppImage {
   static const String avatar_8 = "${_avatarImage}Avatar_8.png";
   static const String avatar_9 = "${_avatarImage}Avatar_9.png";
 
+  static const String profile_icon = 'assets/images/images_app/icon_app/auth/profile.svg';
+  static const String email_icon = 'assets/images/images_app/icon_app/auth/email.svg';
+  static const String password_icon = 'assets/images/images_app/icon_app/auth/password.svg';
+  static const String phone_icon = 'assets/images/images_app/icon_app/auth/phone.svg';
 
 }
