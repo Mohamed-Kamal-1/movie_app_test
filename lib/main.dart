@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.HomeScreen.name : (context) =>  HomeScreen(),
           AppRoutes.OnBoardingScreen.name: (context) => const OnBoardingScreen(),
           AppRoutes.BasicOnBoarding.name: (context) => const BasicOnBoarding(),
-          AppRoutes.UpdateProfile.name: (context) => UpdateProfile(),
+          // AppRoutes.UpdateProfile.name: (context) => UpdateProfile(),
         },
     );
   }
