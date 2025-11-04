@@ -19,5 +19,22 @@ class AppImage {
   static const String availableNow = '${_basePathHome}Available_Now.png';
   static const String watchNow = '${_basePathHome}Watch_Now.png';
 
+  static const String onBoarding_1 = "assets/images/OnBoarding_1.png";
+  static const String onBoarding_2 = "assets/images/OnBoarding_2.png";
+  static const String onBoarding_3 = "assets/images/OnBoarding_3.png";
+  static const String onBoarding_4 = "assets/images/OnBoarding_4.png";
+  static const String onBoarding_5 = "assets/images/OnBoarding_5.png";
+  static const String onBoarding_6 = "assets/images/OnBoarding_6.png";
+
+  static const String avatar_1 = "assets/images/Avatar_1.png";
+  static const String avatar_2 = "assets/images/Avatar_2.png";
+  static const String avatar_3 = "assets/images/Avatar_3.png";
+  static const String avatar_4 = "assets/images/Avatar_4.png";
+  static const String avatar_5 = "assets/images/Avatar_5.png";
+  static const String avatar_6 = "assets/images/Avatar_6.png";
+  static const String avatar_7 = "assets/images/Avatar_7.png";
+  static const String avatar_8 = "assets/images/Avatar_8.png";
+  static const String avatar_9 = "assets/images/Avatar_9.png";
+
 
 }
