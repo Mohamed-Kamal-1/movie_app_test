@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/core/colors/app_color.dart';
 import 'package:movie_app/core/routes/app_routes.dart';
 
 import 'on_boarding_details.dart';

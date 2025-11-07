@@ -12,6 +12,14 @@ class AppImage {
   static const String profile = '${_basePath}Rout.png';
 
 
+  static const String _basePathLogin = 'assets/images/images_app/login_images/';
+  static const String emailIcon = '${_basePathLogin}email.svg';
+  static const String lock = '${_basePathLogin}lock.svg';
+  static const String google = '${_basePathLogin}google.svg';
+  static const String loginLogo = '${_basePathLogin}login_logo.png';
+  static const String forgetImage = '${_basePathLogin}forget_password.png';
+
+
   static const String _basePathHome = 'assets/images/images_app/home_screen_images/';
   static const String midImage = '${_basePathHome}carousel_image_1.png';
   static const String rightImage = '${_basePathHome}carousel_image_2.png';
@@ -42,5 +50,9 @@ class AppImage {
   static const String avatar_8 = "${_avatarImage}Avatar_8.png";
   static const String avatar_9 = "${_avatarImage}Avatar_9.png";
 
+  static const String profile_icon = 'assets/images/images_app/icon_app/auth/profile.svg';
+  static const String email_icon = 'assets/images/images_app/icon_app/auth/email.svg';
+  static const String password_icon = 'assets/images/images_app/icon_app/auth/password.svg';
+  static const String phone_icon = 'assets/images/images_app/icon_app/auth/phone.svg';
 
 }
