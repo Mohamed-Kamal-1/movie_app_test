@@ -4,8 +4,8 @@ import '../../core/images/app_image.dart';
 
 class AvailableNowSection extends StatefulWidget {
   List<String> images;
-  AvailableNowSection({super.key,required this.images});
 
+  AvailableNowSection({super.key, required this.images});
 
   @override
   State<AvailableNowSection> createState() => _AvailableNowSectionState();
@@ -22,22 +22,11 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
   }
 
   @override
-  // void initState() {
-  //   super.initState();
-  //
-  //   _pageController.addListener(() {
-  //     setState(() {
-  //       currentPage = _pageController.page!;
-  //     });
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Image.asset(AppImage.availableNow, width: double.infinity),
-
         Expanded(
           flex: 3,
           child: PageView.builder(
@@ -52,10 +41,7 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                     value = (_pageController.page! - index).abs();
                     value = (1 - value * 0.3).clamp(0.8, 1.0);
                   }
-                  return Transform.scale(
-                    scale: value,
-                    child: child,
-                  );
+                  return Transform.scale(scale: value, child: child);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -71,13 +57,7 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
           ),
         ),
 
-
-        Flexible(
-          child: Image.asset(
-            AppImage.watchNow,
-            width: double.infinity,
-          ),
-        ),
+        Flexible(child: Image.asset(AppImage.watchNow, width: double.infinity)),
       ],
     );
   }
