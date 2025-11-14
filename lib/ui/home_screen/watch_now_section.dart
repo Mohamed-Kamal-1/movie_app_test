@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class WatchNowSection extends StatefulWidget {
-  List<String> images;
-   WatchNowSection({super.key,required this.images});
+  final List<String> images;
+   const WatchNowSection({super.key,required this.images});
 
   @override
   State<WatchNowSection> createState() => _WatchNowSectionState();
