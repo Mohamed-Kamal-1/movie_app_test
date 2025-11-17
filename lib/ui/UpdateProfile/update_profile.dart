@@ -36,12 +36,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(
-          "Pick Avatar",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: AppColor.goldenYellow,
+        title: Center(
+          child: Text(
+            "Pick Avatar",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: AppColor.goldenYellow,
+            ),
           ),
         ),
         leading: IconButton(
