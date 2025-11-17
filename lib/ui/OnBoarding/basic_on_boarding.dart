@@ -10,8 +10,8 @@ class BasicOnBoarding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<OnBoardingDetails> mySlides =
-    OnBoardingDetails.onBoardingList.sublist(1);
+    final List<OnBoardingDetails> mySlides = OnBoardingDetails.onBoardingList
+        .sublist(1);
 
     return BlocProvider(
       create: (_) => OnboardingBloc(totalSlides: mySlides.length),
@@ -20,16 +20,16 @@ class BasicOnBoarding extends StatelessWidget {
   }
 }
 
-
 class _OnBoardingView extends StatelessWidget {
   final List<OnBoardingDetails> mySlides;
+  final PageController _pageController = PageController();
 
-  const _OnBoardingView(this.mySlides);
+  _OnBoardingView(this.mySlides);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: BlocBuilder<OnboardingBloc, OnboardingState>(
         builder: (context, state) {
           final index = state.index;
@@ -38,14 +38,22 @@ class _OnBoardingView extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             fit: StackFit.loose,
             children: [
-              PageView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, _) {
-                  return Image.asset(
-                    mySlides[index].image,
-                    fit: BoxFit.fill,
+              BlocListener<OnboardingBloc, OnboardingState>(
+                listener: (context, state) {
+                  _pageController.animateToPage(
+                    state.index,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
                   );
                 },
+                child: PageView.builder(
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: mySlides.length,
+                  itemBuilder: (context, index) {
+                    return Image.asset(mySlides[index].image, fit: BoxFit.fill);
+                  },
+                ),
               ),
 
               IntrinsicHeight(
@@ -73,10 +81,10 @@ class _OnBoardingView extends StatelessWidget {
 
                       mySlides[index].description.isNotEmpty
                           ? Text(
-                        mySlides[index].description,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      )
+                              mySlides[index].description,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            )
                           : const SizedBox.shrink(),
 
                       const SizedBox(height: 24),
@@ -94,13 +102,10 @@ class _OnBoardingView extends StatelessWidget {
                           }
                         },
                         child: Text(
-                          index != (mySlides.length - 1)
-                              ? "Next"
-                              : "Finish",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(fontSize: 20),
+                          index != (mySlides.length - 1) ? "Next" : "Finish",
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyLarge?.copyWith(fontSize: 20),
                         ),
                       ),
 
@@ -110,31 +115,29 @@ class _OnBoardingView extends StatelessWidget {
                       index == 0
                           ? const SizedBox.shrink()
                           : InkWell(
-                        onTap: () {
-                          context
-                              .read<OnboardingBloc>()
-                              .add(OnPreviousSlide());
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.yellow),
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Center(
-                              child: Text(
-                                "Back",
-                                style: TextStyle(
-                                  color: Colors.yellow,
+                              onTap: () {
+                                context.read<OnboardingBloc>().add(
+                                  OnPreviousSlide(),
+                                );
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.yellow),
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Center(
+                                    child: Text(
+                                      "Back",
+                                      style: TextStyle(color: Colors.yellow),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
 
                       const SizedBox(height: 16),
                     ],
