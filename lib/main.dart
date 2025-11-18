@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       //   localizationsDelegates: AppLocalizations.localizationsDelegates,
       //   supportedLocales: AppLocalizations.supportedLocales,
-        initialRoute: AppRoutes.RegisterScreen.name,
+        initialRoute: AppRoutes.OnBoardingScreen.name,
         routes: {
           AppRoutes.HomeScreen.name : (context) =>  HomeScreen(),
           AppRoutes.OnBoardingScreen.name: (context) => const OnBoardingScreen(),
