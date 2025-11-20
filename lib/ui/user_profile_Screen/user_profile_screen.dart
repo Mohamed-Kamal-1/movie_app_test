@@ -25,7 +25,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   pinned: false,
                   floating: true,
                   snap: true,
-                  expandedHeight: 260,
+                  expandedHeight: 300,
                   flexibleSpace: FlexibleSpaceBar(background: ProfileHeader()),
                 ),
 
