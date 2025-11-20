@@ -6,6 +6,7 @@ import 'package:movie_app/ui/OnBoarding/on_boarding_screen.dart';
 import 'package:movie_app/ui/Register/register.dart';
 import 'package:movie_app/ui/UpdateProfile/update_profile.dart';
 import 'package:movie_app/ui/home_screen/home_screen.dart';
+import 'package:movie_app/ui/user_profile_Screen/user_profile_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,12 +26,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
       //   localizationsDelegates: AppLocalizations.localizationsDelegates,
       //   supportedLocales: AppLocalizations.supportedLocales,
-        initialRoute: AppRoutes.OnBoardingScreen.name,
+        initialRoute: AppRoutes.UserProfileScreen.name,
         routes: {
           AppRoutes.HomeScreen.name : (context) =>  HomeScreen(),
           AppRoutes.OnBoardingScreen.name: (context) => const OnBoardingScreen(),
           AppRoutes.BasicOnBoarding.name: (context) => const BasicOnBoarding(),
           AppRoutes.UpdateProfile.name: (context) => UpdateProfile(),
+          AppRoutes.UserProfileScreen.name: (context) => UserProfileScreen(),
           AppRoutes.RegisterScreen.name: (context) => RegisterScreen(),
         },
     );

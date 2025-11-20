@@ -19,6 +19,7 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
   @override
   void dispose() {
     _pageController.dispose();
+    super.dispose();
   }
 
   @override
