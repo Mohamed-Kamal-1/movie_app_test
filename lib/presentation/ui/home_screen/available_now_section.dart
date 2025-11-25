@@ -9,12 +9,12 @@ import 'package:movie_app/presentation/ui/home_screen/cubit/home_screen_view_mod
 import '../../../core/colors/app_color.dart';
 
 class AvailableNowSection extends StatefulWidget {
-  final HomeScreenViewModel viewModel; // تم إضافة final
+  final HomeScreenViewModel viewModel;
 
   const AvailableNowSection({
     super.key,
     required this.viewModel,
-  }); // تم إضافة const
+  });
 
   @override
   State<AvailableNowSection> createState() => _AvailableNowSectionState();
@@ -28,35 +28,40 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
     _pageController.dispose();
     super.dispose();
   }
-
+@override
+  void initState() {
+    // TODO: implement initState
+  widget.viewModel.getMoviesList('2025-11-25');
+  }
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         Expanded(child: Image.asset(AppImage.availableNow)),
 
-        Expanded(
-          flex: 4,
-          child: BlocBuilder<HomeScreenViewModel, HomeScreenState>(
-            bloc: widget.viewModel,
-            builder: (context, state) {
-              if (state is HomeLoadingState) {
-                return Center(child: CircularProgressIndicator());
-              }
+        BlocBuilder<HomeScreenViewModel, HomeScreenState>(
+          bloc: widget.viewModel,
+          builder: (context, state) {
+            if (state is HomeLoadingState) {
+              return Expanded(flex: 4,child: Center(child: CircularProgressIndicator()));
+            }
 
-              if (state is HomeErrorState) {
-                return Center(
-                  child: Text(
-                    state.errorMessage ?? "Error",
-                    style: context.fonts.bodyMedium?.copyWith(
-                      color: AppColor.white,
-                    ),
+            if (state is HomeErrorState) {
+              return Center(
+                child: Text(
+                  state.errorMessage ?? "Error",
+                  style: context.fonts.bodyMedium?.copyWith(
+                    color: AppColor.white,
                   ),
-                );
-              }
+                ),
+              );
+            }
 
-              if (state is HomeSuccessState) {
-                return PageView.builder(
+            if (state is HomeSuccessState) {
+              return Expanded(
+                flex: 3,
+                child: PageView.builder(
                   controller: _pageController,
                   itemCount: state.moviesList?.length ?? 0,
                   itemBuilder: (context, index) {
@@ -82,12 +87,12 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                       ),
                     );
                   },
-                );
-              }
+                ),
+              );
+            }
 
-              return SizedBox();
-            },
-          ),
+            return SizedBox();
+          },
         ),
 
         Flexible(child: Image.asset(AppImage.watchNow)),

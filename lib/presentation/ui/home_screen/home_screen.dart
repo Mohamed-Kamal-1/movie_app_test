@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/colors/app_color.dart';
 import 'package:movie_app/core/di/di.dart';
 import 'package:movie_app/core/images/app_image.dart';
 import 'package:movie_app/extensions/extension.dart';
 import 'package:movie_app/l10n/app_string.dart';
-
+import 'package:movie_app/presentation/ui/home_screen/watch_now_section.dart';
 
 import 'available_now_section.dart';
 import 'bottom_navigation_section.dart';
@@ -21,7 +20,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late HomeScreenViewModel viewModel;
 
-
   final List<String> images = [
     AppImage.leftImage,
     AppImage.midImage,
@@ -36,10 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
     AppImage.midImage,
     AppImage.rightImage,
   ];
+
   @override
   void initState() {
     viewModel = getIt.get<HomeScreenViewModel>();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
-                AvailableNowSection(viewModel: viewModel,),
+                AvailableNowSection(viewModel: viewModel),
               ],
             ),
           ),
