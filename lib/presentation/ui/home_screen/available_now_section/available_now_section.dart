@@ -26,7 +26,6 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
     _pageController.dispose();
     super.dispose();
     currentPage.dispose();
-    widget.viewModel.close();
   }
 
   @override

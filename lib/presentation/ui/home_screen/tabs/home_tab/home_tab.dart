@@ -24,7 +24,6 @@ class _HomeTabState extends State<HomeTab> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    viewModel.close();
   }
 
   @override
