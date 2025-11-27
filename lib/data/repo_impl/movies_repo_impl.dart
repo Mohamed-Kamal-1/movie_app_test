@@ -25,5 +25,8 @@ class MoviesRepoImpl implements MoviesRepo {
     return moviesListDataSource.getErrorStatusCode();
   }
 
-
+  @override
+  Future<List<MovieModel>> getMoviesListByGenres(String genre) {
+    return moviesListDataSource.getMoviesListByGenres(genre);
+  }
 }

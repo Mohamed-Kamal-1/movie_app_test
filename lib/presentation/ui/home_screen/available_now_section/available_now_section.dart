@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/images/app_image.dart';
 import 'package:movie_app/extensions/extension.dart';
+import 'package:movie_app/presentation/ui/home_screen/available_now_section/movies_list_widget.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/hom_screen_state.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/home_screen_view_model.dart';
 
-import '../../../core/colors/app_color.dart';
+import '../../../../core/colors/app_color.dart';
 
 class AvailableNowSection extends StatefulWidget {
   final HomeScreenViewModel viewModel;
@@ -26,6 +27,7 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
     _pageController.dispose();
     super.dispose();
     currentPage.dispose();
+
   }
 
   @override
@@ -35,7 +37,6 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
     _pageController.addListener(() {
       if (_pageController.hasClients && _pageController.page != null) {
         currentPage.value = _pageController.page!.round();
-
       }
     });
 
@@ -74,15 +75,15 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                       fit: BoxFit.fill,
                       imageUrl: state.moviesList![value].largeCoverImage ?? "",
 
-                      placeholder: (context, url) => Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
 
-                      errorWidget: (context, url, error) => Icon(
-                        Icons.broken_image,
-                        size: 40,
-                        color: Colors.grey,
-                      ),
+                      errorWidget: (context, url, error) =>
+                          Icon(
+                            Icons.broken_image,
+                            size: 40,
+                            color: Colors.grey,
+                          ),
                     ),
                   );
                 },
@@ -100,14 +101,14 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                       const Color(0xFF121312).withValues(alpha: 1),
                     ],
                   ),
-                  // image: DecorationImage(image: image)
                 ),
               ),
 
               Column(
                 children: [
-                  Image.asset(AppImage.availableNow),
+                  Expanded(child: Image.asset(AppImage.availableNow)),
                   Expanded(
+                    flex: 3,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: state.moviesList?.length ?? 0,
@@ -127,27 +128,21 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: CachedNetworkImage(
-                              fit: BoxFit.fill,
-                              imageUrl:
-                                  state.moviesList![index].mediumCoverImage ??
-                                  "",
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(),
-                              ),
+                              child: CachedNetworkImage(
+                                fit: BoxFit.fill,
+                                imageUrl: state.moviesList![index].mediumCoverImage ?? "",
+                                placeholder: (context, url) =>
+                                    Center(child: CircularProgressIndicator()),
 
-                              errorWidget: (context, url, error) => Icon(
-                                Icons.broken_image,
-                                size: 40,
-                                color: Colors.grey,
-                              ),
-                            ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.broken_image, size: 40, color: Colors.grey),
+                              )
                           ),
                         );
                       },
                     ),
                   ),
-                  Image.asset(AppImage.watchNow),
+                  Flexible(child: Image.asset(AppImage.watchNow)),
                 ],
               ),
             ],
@@ -159,5 +154,3 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
     );
   }
 }
-
-

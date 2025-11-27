@@ -34,4 +34,15 @@ class MoviesListDataSourceImpl implements MoviesListDataSource {
   String getErrorStatusCode() {
     return statusCode!;
   }
+
+  @override
+  Future<List<MovieModel>> getMoviesListByGenres(String genre)async {
+    MovieResponseDto response = await apiManager.getMoviesList(genre);
+    response.statusMessage = errorMessage;
+    response.code = statusCode;
+    return response.data?.movies
+        ?.map((moviesDto) => moviesDto.getMoviesList())
+        .toList() ??
+        [];
+  }
 }

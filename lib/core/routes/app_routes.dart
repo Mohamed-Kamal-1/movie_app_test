@@ -4,7 +4,7 @@ enum AppRoutes {
   UpdateProfile,
   RegisterScreen,
   LoginScreen,
-  HomeScreen,
-  ForgetScreen,
+  HomeTab,
+  ForgetScreen, HomeScreen,
   ;
 }
