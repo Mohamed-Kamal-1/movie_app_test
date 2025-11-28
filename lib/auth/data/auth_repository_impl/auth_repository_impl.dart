@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:movie_app/auth/data/auth_data_source/AuthDataSourceImpl.dart';
-import 'package:movie_app/auth/domain/auth_repository/auth_repository.dart';
-import 'package:movie_app/auth/domain/entities/auth_result.dart';
-import 'package:movie_app/core/errors/failure.dart';
+import '../../../core/errors/failure.dart';
+import '../../domain/auth_repository/auth_repository.dart';
+import '../../domain/entities/auth_result.dart';
+import '../auth_data_source/AuthDataSourceImpl.dart';
 
-@lazySingleton
+@LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  AuthDataSourceImpl _authDataSource;
+  final AuthDataSourceImpl _authDataSource;
 
   AuthRepositoryImpl(this._authDataSource);
 
@@ -32,9 +32,9 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return Right(result.toEntity());
     } on DioException catch (e) {
-      return Left(ServerFailure(message: e.response?.data['message']));
+      return Left(ServerFailure(message: e.response?.data['message'] ?? 'Server error'));
     } catch (e) {
-      return Left(ServerFailure(message: 'error'));
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 }

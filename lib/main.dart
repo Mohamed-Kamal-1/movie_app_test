@@ -10,6 +10,7 @@ import 'package:movie_app/ui/forget_password_screen/forget_screen.dart';
 import 'package:movie_app/ui/home_screen/home_screen.dart';
 import 'package:movie_app/ui/login_screen/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'auth/presentation/auth_cubit/register_cubit.dart';
 import 'bloc/language_provider.dart';
 import 'core/di/di.dart';
 

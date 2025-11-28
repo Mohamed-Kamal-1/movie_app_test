@@ -20,17 +20,17 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController rePasswordController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  PageController avatarController = PageController(viewportFraction: 0.33);
-
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController rePasswordController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final PageController avatarController = PageController(viewportFraction: 0.33);
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   bool isLoading = false;
 
-  List<String> avatars = [
+  final List<String> avatars = [
     AppImage.avatar_1,
     AppImage.avatar_2,
     AppImage.avatar_3,
@@ -50,63 +50,71 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<RegisterCubit>(),
+    // هنا نجيب الـ Cubit من getIt اللي مربوط بالـ API
+    final registerCubit = getIt<RegisterCubit>();
+
+    return BlocListener<RegisterCubit, RegisterState>(
+      bloc: registerCubit,
+      listener: (context, state) {
+        if (state is LoadingState) {
+          setState(() => isLoading = true);
+        } else if (state is SuccessState) {
+          setState(() => isLoading = false);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => HomeScreen()),
+          );
+        } else if (state is ErrorState) {
+          setState(() => isLoading = false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+          );
+        }
+      },
 
       child: Scaffold(
-        appBar: AppBar(title: Text("Register"), centerTitle: true),
+        appBar: AppBar(title: const Text("Register"), centerTitle: true),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 120,
-                      child: PageView.builder(
-                        controller: avatarController,
-                        itemCount: avatars.length,
-                        itemBuilder: (context, index) {
-                          return AnimatedBuilder(
-                            animation: avatarController,
-                            builder: (context, child) {
-                              double value = 1.0;
-
-                              if (avatarController.position.haveDimensions) {
-                                value = (avatarController.page! - index).abs();
-                                value = (1 - (value * 0.5)).clamp(0.5, 1.6);
-                              }
-
-                              return Center(
-                                child: Transform.scale(
-                                  scale: value,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      avatarController.animateToPage(
-                                        index,
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.easeOut,
-                                      );
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 47 + (80 - 47) * value,
-                                      child: CircleAvatar(
-                                        radius: 47 + (80 - 47) * value,
-                                        backgroundImage: AssetImage(
-                                          avatars[index],
-                                        ),
-                                      ),
-                                    ),
+                SizedBox(
+                  height: 120,
+                  child: PageView.builder(
+                    controller: avatarController,
+                    itemCount: avatars.length,
+                    itemBuilder: (context, index) {
+                      return AnimatedBuilder(
+                        animation: avatarController,
+                        builder: (context, child) {
+                          double value = 1.0;
+                          if (avatarController.position.haveDimensions) {
+                            value = (avatarController.page! - index).abs();
+                            value = (1 - (value * 0.5)).clamp(0.5, 1.6);
+                          }
+                          return Center(
+                            child: Transform.scale(
+                              scale: value,
+                              child: GestureDetector(
+                                onTap: () => avatarController.animateToPage(
+                                  index,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeOut,
+                                ),
+                                child: CircleAvatar(
+                                  radius: 47 + (80 - 47) * value,
+                                  child: CircleAvatar(
+                                    radius: 47 + (80 - 47) * value,
+                                    backgroundImage: AssetImage(avatars[index]),
                                   ),
                                 ),
-                              );
-                            },
+                              ),
+                            ),
                           );
                         },
-                      ),
-                    ),
-                  ],
+                      );
+                    },
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -126,99 +134,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       AppFormField(
                         controller: nameController,
                         label: "Name",
-                        icon: SvgPicture.asset(
-                          AppImage.profile_icon,
-                          width: 32.84,
-                          height: 27.58,
-                          fit: BoxFit.contain,
-                        ),
+                        icon: SvgPicture.asset(AppImage.profile_icon, width: 32.84, height: 27.58),
                         keyboardType: TextInputType.name,
-                        validator: (text) {
-                          if (text?.trim().isEmpty == true) {
-                            return "Please enter your name";
-                          }
-                          return null;
-                        },
+                        validator: (text) => (text?.trim().isEmpty ?? true) ? "Please enter your name" : null,
                       ),
                       AppFormField(
                         controller: emailController,
                         label: "Email",
-                        icon: SvgPicture.asset(
-                          AppImage.email_icon,
-                          width: 25,
-                          height: 25,
-                          fit: BoxFit.contain,
-                        ),
+                        icon: SvgPicture.asset(AppImage.email_icon, width: 25, height: 25),
                         keyboardType: TextInputType.emailAddress,
                         validator: (text) {
-                          if (text?.trim().isEmpty == true) {
-                            return "Please enter your email";
-                          }
-                          if (!isValidEmail(text)) {
-                            return "Please enter valid email";
-                          }
+                          if (text?.trim().isEmpty ?? true) return "Please enter your email";
+                          if (!isValidEmail(text)) return "Please enter valid email";
                           return null;
                         },
                       ),
                       AppFormField(
                         controller: passwordController,
                         label: "Password",
-                        icon: SvgPicture.asset(
-                          AppImage.password_icon,
-                          width: 25,
-                          height: 28,
-                          fit: BoxFit.contain,
-                        ),
+                        icon: SvgPicture.asset(AppImage.password_icon, width: 25, height: 28),
                         keyboardType: TextInputType.text,
                         isPassword: true,
                         validator: (text) {
-                          if (text?.trim().isEmpty == true) {
-                            return "please enter password";
-                          }
-                          if ((text?.length ?? 0) < 6) {
-                            return "Password must be at least 6 characters";
-                          }
+                          if (text?.trim().isEmpty ?? true) return "Please enter password";
+                          if ((text?.length ?? 0) < 6) return "Password must be at least 6 characters";
                           return null;
                         },
                       ),
                       AppFormField(
                         controller: rePasswordController,
                         label: "Confirm Password",
-                        icon: SvgPicture.asset(
-                          AppImage.password_icon,
-                          width: 25,
-                          height: 28,
-                          fit: BoxFit.contain,
-                        ),
+                        icon: SvgPicture.asset(AppImage.password_icon, width: 25, height: 28),
                         keyboardType: TextInputType.text,
                         isPassword: true,
                         validator: (text) {
-                          if (text?.trim().isEmpty == true) {
-                            return "please enter password";
-                          }
-                          if (passwordController.text != text) {
-                            return "Password does not match";
-                          }
+                          if (text?.trim().isEmpty ?? true) return "Please enter password";
+                          if (passwordController.text != text) return "Password does not match";
                           return null;
                         },
                       ),
                       AppFormField(
                         controller: phoneController,
                         label: "Phone Number",
-                        icon: SvgPicture.asset(
-                          AppImage.phone_icon,
-                          width: 25,
-                          height: 25,
-                          fit: BoxFit.contain,
-                        ),
+                        icon: SvgPicture.asset(AppImage.phone_icon, width: 25, height: 25),
                         keyboardType: TextInputType.phone,
                         validator: (text) {
-                          if (text?.trim().isEmpty == true) {
-                            return "Please enter your phone number";
-                          }
-                          if (!isValidPhone(text)) {
-                            return "Please enter valid Phone";
-                          }
+                          if (text?.trim().isEmpty ?? true) return "Please enter your phone number";
+                          if (!isValidPhone(text)) return "Please enter valid Phone";
                           return null;
                         },
                       ),
@@ -227,38 +189,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: isLoading
                             ? null
                             : () {
-                                if (formKey.currentState!.validate()) {
-                                  /////////////////cubit/////////////////
-                                  context.read<RegisterCubit>().register(
-                                    name: nameController.text.trim(),
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim(),
-                                    confirmPassword: rePasswordController.text
-                                        .trim(),
-                                    phone: phoneController.text.trim(),
-                                    avaterId:
-                                        avatarController.page?.round() ?? 0,
-                                  );
-                                }
-                              },
+                          if (formKey.currentState!.validate()) {
+                            registerCubit.register(
+                              name: nameController.text.trim(),
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                              confirmPassword: rePasswordController.text.trim(),
+                              phone: phoneController.text.trim(),
+                              avaterId: avatarController.page?.round() ?? 0,
+                            );
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColor.goldenYellow,
                           foregroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                           textStyle: GoogleFonts.inter(fontSize: 20),
                         ),
                         child: isLoading
                             ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircularProgressIndicator(),
-                                  SizedBox(width: 8),
-                                  Text("Loading..."),
-                                ],
-                              )
-                            : Text("Create Account"),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            CircularProgressIndicator(),
+                            SizedBox(width: 8),
+                            Text("Loading..."),
+                          ],
+                        )
+                            : const Text("Create Account"),
                       ),
                       const SizedBox(height: 6),
                       Row(
@@ -266,17 +223,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         children: [
                           Text(
                             "Already Have Account ? ",
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: Colors.white),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
                           ),
                           TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Login",
-                              style: TextStyle(color: AppColor.goldenYellow),
-                            ),
+                            onPressed: () => Navigator.pop(context),
+                            child: Text("Login", style: TextStyle(color: AppColor.goldenYellow)),
                           ),
                         ],
                       ),

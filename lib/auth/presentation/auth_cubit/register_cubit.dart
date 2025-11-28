@@ -19,15 +19,29 @@ class RegisterCubit extends Cubit<RegisterState> {
   }) async {
     emit(LoadingState());
 
-    final result = await _repository.register(
-      name: name,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-      phone: phone,
-      avaterId: avaterId,
-    );
+    try {
+      final result = await _repository.register(
+        name: name,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+        phone: phone,
+        avaterId: avaterId,
+      );
 
-    result.fold((l) => emit(ErrorState(message: l.message)), (r) => emit(SuccessState(r)));
+      result.fold(
+        (failure) {
+          print("Register failed: ${failure.message}");
+          emit(ErrorState(message: failure.message));
+        },
+        (authResult) {
+          print("Register success: ${authResult.data?.token ?? "no token"}");
+          // لو data موجودة استخدمها، ولو لأ خلي SuccessState من غير مشاكل
+          emit(SuccessState(authResult));
+        },
+      );
+    } catch (e) {
+      emit(ErrorState(message: e.toString()));
+    }
   }
 }
