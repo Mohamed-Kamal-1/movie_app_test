@@ -4,6 +4,6 @@ import '../api_result.dart';
 
 abstract interface class UpdateProfileRepo {
 
-  Future<Result<UpdateProfileDto>> updateProfile(String email , int avatarId);
+  Future<UpdateProfileDto> updateProfile(String email , int avatarId);
   String getErrorMessage();
 }

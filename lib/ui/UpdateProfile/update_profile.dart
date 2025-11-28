@@ -5,6 +5,7 @@ import 'package:movie_app/core/images/app_image.dart';
 import 'package:movie_app/ui/UpdateProfile/bloc/profile_screen_state.dart';
 import 'package:movie_app/ui/user_profile_Screen/user_profile_screen.dart';
 
+import '../../core/di/di.dart';
 import 'bloc/profile_view_model.dart';
 import 'widget/CutomFormField.dart';
 
@@ -44,7 +45,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       builder: (context, state) {
         switch (state) {
           case ProfileSuccessState():
-            nameController.text = state.profile.data?.name ?? "name";
+            nameController.text = state.profile.data?.email ?? "name";
             phoneController.text = state.profile.data?.phone ?? "010";
             return Scaffold(
               backgroundColor: Colors.black,
@@ -64,7 +65,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   color: AppColor.goldenYellow,
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                 ),
               ),
@@ -127,7 +128,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              getIt<ProfileViewModel>().deleteAcc();
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
                             ),
@@ -139,13 +142,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return UserProfileScreen();
-                                  },
-                                ),
-                              );
+                              getIt<ProfileViewModel>().updateData( nameController.text , selectedAvatar);
+                              // Navigator.of(context).pushReplacement(
+                              //   MaterialPageRoute(
+                              //     builder: (context) {
+                              //       return UserProfileScreen();
+                              //     },
+                              //   ),
+                              // );
                             },
                             child: Text(
                               "Update Data",

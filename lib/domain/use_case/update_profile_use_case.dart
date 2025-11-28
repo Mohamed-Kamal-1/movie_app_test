@@ -1,4 +1,3 @@
-/*
 import 'package:injectable/injectable.dart';
 
 import '../../api/model/profile/update_profile_dto.dart';
@@ -11,7 +10,7 @@ class UpdateProfileUseCase {
 
   UpdateProfileUseCase(this.updateProfileRepo);
 
-  Future<Result<UpdateProfileDto>> updateProfile(String email, int avatarId) {
+  Future<UpdateProfileDto> updateProfile(String email, int avatarId) {
     return updateProfileRepo.updateProfile(email, avatarId);
   }
 
@@ -19,4 +18,3 @@ class UpdateProfileUseCase {
     return updateProfileRepo.getErrorMessage();
   }
 }
-*/

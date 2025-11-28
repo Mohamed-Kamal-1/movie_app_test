@@ -62,7 +62,7 @@ class ProfileHeader extends StatelessWidget {
                   flex: 5,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
                             return UpdateProfileScreen();

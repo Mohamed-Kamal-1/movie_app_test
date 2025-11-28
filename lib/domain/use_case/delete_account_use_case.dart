@@ -1,5 +1,5 @@
-/*
 import 'package:injectable/injectable.dart';
+import 'package:movie_app/api/model/profile/delete_account_dto.dart';
 
 import '../api_result.dart';
 import '../repos/delete_account_repo.dart';
@@ -10,7 +10,7 @@ class DeleteAccountUseCase {
 
   DeleteAccountUseCase(this.deleteAccountRepo);
 
-  Future<Result<DeleteAccountRepo>> deleteAccount() {
+  Future<DeleteAccountDto> deleteAccount() {
     return deleteAccountRepo.deleteAccount();
   }
 
@@ -18,4 +18,3 @@ class DeleteAccountUseCase {
     return deleteAccountRepo.getErrorMessage();
   }
 }
-*/
