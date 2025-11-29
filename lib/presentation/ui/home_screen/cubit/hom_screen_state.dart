@@ -1,6 +1,6 @@
 import 'package:movie_app/domain/model/movie_model.dart';
 
-abstract class HomeScreenState {}
+  abstract class HomeScreenState {}
 
 class HomeInitialState extends HomeScreenState {}
 

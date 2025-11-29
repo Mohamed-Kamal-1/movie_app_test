@@ -9,5 +9,5 @@ abstract interface class MoviesListDataSource {
 
   Future<List<MovieModel>> getMoviesListByGenres(String genre);
 
-  // Future<List<MovieModel>> searchByMoveTitle(String title);
+  Future<List<MovieModel>>  searchByMoveTitle(String title);
 }

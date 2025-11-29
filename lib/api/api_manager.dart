@@ -76,7 +76,7 @@ class ApiManager {
 
   Future<MovieResponseDto> searchByMoveTitle(String title) async {
     try {
-      Map<String, String> parameter = {'title': title};
+      Map<String, String> parameter = {'date_added': title};
       Response response = await dio.get(
         Endpoints.moviesList,
         queryParameters: parameter,

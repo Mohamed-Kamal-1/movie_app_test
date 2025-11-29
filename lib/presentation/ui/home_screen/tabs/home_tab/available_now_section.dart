@@ -47,10 +47,7 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
       bloc: widget.viewModel,
       builder: (context, state) {
         if (state is HomeLoadingState) {
-          return const Expanded(
-            flex: 4,
-            child: Center(child: CircularProgressIndicator()),
-          );
+          return Center(child: CircularProgressIndicator());
         }
 
         if (state is HomeErrorState) {
