@@ -6,7 +6,7 @@ import 'package:movie_app/core/images/app_image.dart';
 import '../OnBoarding/widgets/CutomFormField.dart';
 
 class UpdateProfile extends StatefulWidget {
-   UpdateProfile({super.key});
+   const UpdateProfile({super.key});
 
   @override
   State<UpdateProfile> createState() => _UpdateProfileState();
@@ -73,6 +73,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 if (text?.trim().isEmpty == true) {
                   return "Please enter Name";
                 }
+                return null;
               },
             ),
             SizedBox(height: 16),
@@ -86,6 +87,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 if (text?.trim().isEmpty == true) {
                   return "Please enter phone number";
                 }
+                return null;
               },
             ),
 

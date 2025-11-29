@@ -6,7 +6,6 @@ import 'package:movie_app/extensions/extension.dart';
 
 import '../../core/images/app_image.dart';
 import '../../core/routes/app_routes.dart';
-import 'toogle_switch_widget.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
