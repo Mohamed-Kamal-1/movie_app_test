@@ -9,7 +9,6 @@ import '../../core/di/di.dart';
 import 'bloc/profile_view_model.dart';
 import 'widget/CutomFormField.dart';
 
-
 final imgList = [
   AppImage.avatar_1,
   AppImage.avatar_2,
@@ -30,26 +29,49 @@ class UpdateProfile extends StatefulWidget {
 }
 
 class _UpdateProfileState extends State<UpdateProfile> {
-  int selectedAvatar = 0;
+  int selectedAvatar = -1;
+
+  late final TextEditingController nameController;
+  late final TextEditingController phoneController;
 
   @override
   void initState() {
     super.initState();
+
+    nameController = TextEditingController();
+    phoneController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController phoneController = TextEditingController();
-
-
-
     return BlocBuilder<ProfileViewModel, ProfileScreenState>(
       builder: (context, state) {
         switch (state) {
           case ProfileSuccessState():
-            nameController.text = state.profile.data?.email ?? "name";
-            phoneController.text = state.profile.data?.phone ?? "010";
+            final rawId = state.profile.data?.avaterId ?? 0;
+            final profileAvatarId = (rawId >= 0 && rawId < imgList.length)
+                ? rawId
+                : 0;
+            final profileEmail = state.profile.data?.email ?? '';
+            final profilePhone = state.profile.data?.phone ?? '';
+            if (nameController.text != profileEmail) {
+              nameController.text = profileEmail;
+            }
+            if (phoneController.text != profilePhone) {
+              phoneController.text = profilePhone;
+            }
+            final displayedAvatarIndex =
+                (selectedAvatar >= 0 && selectedAvatar < imgList.length)
+                ? selectedAvatar
+                : profileAvatarId;
+
             return Scaffold(
               backgroundColor: Colors.black,
               appBar: AppBar(
@@ -81,7 +103,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     GestureDetector(
                       onTap: () => _showBottomSheet(context, imgList),
                       child: Image.asset(
-                        imgList[state.profile.data?.avaterId ?? 0],
+                        imgList[displayedAvatarIndex],
                         width: 150,
                         height: 150,
                       ),
@@ -122,10 +144,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
 
-                    Spacer(),
+                    const Spacer(),
 
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -145,14 +167,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: () {
-                              getIt<ProfileViewModel>().updateData( nameController.text , selectedAvatar);
-                              // Navigator.of(context).pushReplacement(
-                              //   MaterialPageRoute(
-                              //     builder: (context) {
-                              //       return UserProfileScreen();
-                              //     },
-                              //   ),
-                              // );
+                              final avatarToSend = (selectedAvatar >= 0)
+                                  ? selectedAvatar
+                                  : profileAvatarId;
+                              getIt<ProfileViewModel>().updateData(
+                                nameController.text,
+                                avatarToSend,
+                              );
                             },
                             child: Text(
                               "Update Data",
@@ -203,7 +224,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             decoration: BoxDecoration(
-              color: Color(0xFF282A28),
+              color: AppColor.gray,
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(24),
                 topLeft: Radius.circular(24),
@@ -212,10 +233,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
             height: 400,
             width: double.infinity,
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
               ),
 
+              itemCount: imgs.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
