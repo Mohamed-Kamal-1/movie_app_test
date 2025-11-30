@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/app_theme/app_theme.dart';
 import 'package:movie_app/core/routes/app_routes.dart';
-import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/home_screen.dart';
+import 'package:movie_app/presentation/OnBoarding/basic_on_boarding.dart';
+import 'package:movie_app/presentation/OnBoarding/on_boarding_screen.dart';
+
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/home_tab.dart';
-import 'package:movie_app/ui/OnBoarding/basic_on_boarding.dart';
-import 'package:movie_app/ui/OnBoarding/on_boarding_screen.dart';
+
 import 'package:movie_app/ui/Register/register.dart';
-import 'package:movie_app/ui/UpdateProfile/update_profile.dart';
+
 import 'package:movie_app/ui/UpdateProfile/update_profile_screen.dart';
 import 'package:movie_app/ui/forget_password_screen/forget_screen.dart';
 import 'package:movie_app/ui/user_profile_Screen/user_profile_screen.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       //   localizationsDelegates: AppLocalizations.localizationsDelegates,
       //   supportedLocales: AppLocalizations.supportedLocales,
-      initialRoute: AppRoutes.UserProfileScreen.name,
+      initialRoute: AppRoutes.OnBoardingScreen.name,
       routes: {
         AppRoutes.HomeTab.name: (context) => HomeTab(),
         AppRoutes.OnBoardingScreen.name: (context) => const OnBoardingScreen(),

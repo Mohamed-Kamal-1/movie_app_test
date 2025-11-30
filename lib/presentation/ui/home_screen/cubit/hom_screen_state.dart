@@ -1,5 +1,4 @@
 import 'package:movie_app/domain/model/movie_model.dart';
-import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/home_screen.dart';
 
 abstract class HomeScreenState {}
 

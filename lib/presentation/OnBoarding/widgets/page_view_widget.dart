@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/ui/OnBoarding/basic_on_boarding.dart';
-import 'package:movie_app/ui/OnBoarding/on_boarding_details.dart';
 
 import '../../../core/colors/app_color.dart';
+import '../basic_on_boarding.dart';
+import '../on_boarding_details.dart';
 
 class PageViewWidget extends StatelessWidget {
   const PageViewWidget({super.key, required this.onBoarding});
