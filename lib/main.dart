@@ -7,8 +7,12 @@ import 'package:movie_app/ui/OnBoarding/basic_on_boarding.dart';
 import 'package:movie_app/ui/OnBoarding/on_boarding_screen.dart';
 import 'package:movie_app/ui/Register/register.dart';
 import 'package:movie_app/ui/UpdateProfile/update_profile.dart';
+import 'package:movie_app/ui/UpdateProfile/update_profile_screen.dart';
+import 'package:movie_app/ui/UpdateProfile/update_profile_screen.dart';
 import 'package:movie_app/ui/forget_password_screen/forget_screen.dart';
+import 'package:movie_app/ui/user_profile_Screen/user_profile_screen.dart';
 import 'package:movie_app/ui/login_screen/login_screen.dart';
+import 'package:movie_app/ui/user_profile_Screen/user_profile_screen.dart';
 import 'api/my_bloc_observer.dart';
 import 'core/di/di.dart';
 
@@ -46,7 +50,8 @@ class MyApp extends StatelessWidget {
         AppRoutes.HomeTab.name: (context) => HomeTab(),
         AppRoutes.OnBoardingScreen.name: (context) => const OnBoardingScreen(),
         AppRoutes.BasicOnBoarding.name: (context) => const BasicOnBoarding(),
-        AppRoutes.UpdateProfile.name: (context) => UpdateProfile(),
+        AppRoutes.UpdateProfile.name: (context) => UpdateProfileScreen(),
+        AppRoutes.UserProfileScreen.name: (context) => UserProfileScreen(),
         AppRoutes.LoginScreen.name: (context) => const LoginScreen(),
         AppRoutes.ForgetScreen.name: (context) => const ForgetScreen(),
         AppRoutes.RegisterScreen.name: (context) => const RegisterScreen(),
