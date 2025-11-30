@@ -5,14 +5,10 @@ import 'package:movie_app/extensions/extension.dart';
 import '../../core/colors/app_color.dart';
 
 class MoviesWidget extends StatefulWidget {
-  final String? Function(int index) imageBuilder;
+  final String? Function(int index)? imageBuilder;
   final int? moviesLength;
 
-  const MoviesWidget({
-    super.key,
-    required this.moviesLength,
-    required this.imageBuilder,
-  });
+  const MoviesWidget({super.key, this.moviesLength, this.imageBuilder});
 
   @override
   State<MoviesWidget> createState() => _MoviesWidgetState();
@@ -37,7 +33,7 @@ class _MoviesWidgetState extends State<MoviesWidget> {
             itemBuilder: (context, index) {
               return Stack(
                 children: [
-                  CachedNetworkImage(imageUrl: widget.imageBuilder(index)!),
+                  CachedNetworkImage(imageUrl: widget.imageBuilder!(index)!),
 
                   Container(
                     margin: EdgeInsets.symmetric(

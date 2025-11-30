@@ -342,7 +342,7 @@ packages:
     source: sdk
     version: "0.0.0"
   get_it:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: get_it
       sha256: "368c1abda38084fb5c0c280bfdd5e4ddb010eaa022ff3e953e8b503f7b334b7d"
@@ -1035,5 +1035,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.9.2 <4.0.0"
+  dart: ">=3.9.0 <4.0.0"
   flutter: ">=3.35.0"

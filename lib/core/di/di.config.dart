@@ -99,7 +99,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i687.MoviesListUseCase>(
       () => _i687.MoviesListUseCase(gh<_i958.MoviesRepo>()),
     );
-    gh.factory<_i976.HomeScreenViewModel>(
     gh.factory<_i786.UpdateProfileUseCase>(
       () => _i786.UpdateProfileUseCase(gh<_i152.UpdateProfileRepo>()),
     );
