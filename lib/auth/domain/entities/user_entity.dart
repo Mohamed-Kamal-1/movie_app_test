@@ -5,13 +5,17 @@ class UserEntity {
   final String confirmPassword;
   final String phone;
   final int avaterId;
+  final String id;
+
+
 
   UserEntity({
     required this.name,
     required this.email,
     required this.password,
-    required this.confirmPassword,
     required this.phone,
     required this.avaterId,
+    required this.id,
+    required this.confirmPassword,
   });
 }
