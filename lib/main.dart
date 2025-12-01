@@ -7,6 +7,7 @@ import 'package:movie_app/ui/OnBoarding/basic_on_boarding.dart';
 import 'package:movie_app/ui/OnBoarding/on_boarding_screen.dart';
 import 'package:movie_app/ui/Register/register.dart';
 import 'package:movie_app/ui/UpdateProfile/update_profile.dart';
+import 'package:movie_app/ui/details_screen/details_screen.dart';
 import 'package:movie_app/ui/forget_password_screen/forget_screen.dart';
 import 'package:movie_app/ui/login_screen/login_screen.dart';
 import 'api/my_bloc_observer.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.LoginScreen.name: (context) => const LoginScreen(),
         AppRoutes.ForgetScreen.name: (context) => const ForgetScreen(),
         AppRoutes.RegisterScreen.name: (context) => const RegisterScreen(),
+        AppRoutes.DetailsScreen.name: (context) => const DetailsScreen(),
       },
     );
   }

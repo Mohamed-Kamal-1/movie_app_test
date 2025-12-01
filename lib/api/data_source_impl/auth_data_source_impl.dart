@@ -19,6 +19,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       errorMessage = e.toString().replaceFirst('Exception: ', '');
       rethrow;
     }
+  
   }
 
   @override

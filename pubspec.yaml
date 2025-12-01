@@ -51,6 +51,10 @@ dependencies:
   injectable: ^2.6.0
   flutter_bloc: ^9.1.1
   cached_network_image: ^3.4.1
+  webview_flutter: ^4.4.2
+  readmore: ^3.0.0
+  connectivity_plus: ^5.0.2
+  http: ^1.1.2
 
 
 dev_dependencies:
@@ -89,6 +93,7 @@ flutter:
     - assets/images/avatar_image/
     - assets/images/Splash/
     - assets/images/images_app/icon_app/
+    - assets/images/movie_details_icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

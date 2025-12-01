@@ -72,176 +72,178 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: Scaffold(
           body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(19.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 118,
-                      child: Image.asset(AppImage.loginLogo),
-                    ),
-                    const SizedBox(height: 60),
-                    AppFormField(
-                      label: 'Email',
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      icon: SvgPicture.asset(
-                        AppImage.emailIcon,
-                        fit: BoxFit.scaleDown,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(19.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 118,
+                        child: Image.asset(AppImage.loginLogo),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        if (!isValidEmail(value)) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
-                    ),
-                    AppFormField(
-                      label: 'Password',
-                      controller: _passwordController,
-                      isPassword: true,
-                      icon: SvgPicture.asset(
-                        AppImage.lock,
-                        fit: BoxFit.scaleDown,
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoutes.ForgetScreen.name,
-                          );
+                      const SizedBox(height: 60),
+                      AppFormField(
+                        label: 'Email',
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        icon: SvgPicture.asset(
+                          AppImage.emailIcon,
+                          fit: BoxFit.scaleDown,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (!isValidEmail(value)) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
                         },
-                        child: Text(
-                          'Forgot Password?',
-                          style: context.fonts.bodyMedium?.copyWith(
-                            color: AppColor.yellow,
-                          ),
-                        ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
-                    BlocBuilder<LoginViewModel, LoginState>(
-                      builder: (context, state) {
-                        final isLoading = state is LoginLoadingState;
-                        return ElevatedButton(
-                          onPressed: isLoading ? null : _handleLogin,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColor.goldenYellow,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          child: isLoading
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      AppColor.black,
-                                    ),
-                                  ),
-                                )
-                              : Text(
-                                  'Login',
-                                  style: context.fonts.titleMedium?.copyWith(
-                                    color: AppColor.black,
-                                  ),
-                                ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 22),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Don\'t Have Account ? ',
-                          style: context.fonts.bodyMedium?.copyWith(
-                            color: AppColor.white,
-                          ),
+                      AppFormField(
+                        label: 'Password',
+                        controller: _passwordController,
+                        isPassword: true,
+                        icon: SvgPicture.asset(
+                          AppImage.lock,
+                          fit: BoxFit.scaleDown,
                         ),
-                        InkWell(
-                          onTap: () {
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
                             Navigator.pushNamed(
                               context,
-                              AppRoutes.RegisterScreen.name,
+                              AppRoutes.ForgetScreen.name,
                             );
                           },
                           child: Text(
-                            'Create One',
+                            'Forgot Password?',
                             style: context.fonts.bodyMedium?.copyWith(
                               color: AppColor.yellow,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 22),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
-                      child: Row(
+                      ),
+                      const SizedBox(height: 24),
+                      BlocBuilder<LoginViewModel, LoginState>(
+                        builder: (context, state) {
+                          final isLoading = state is LoginLoadingState;
+                          return ElevatedButton(
+                            onPressed: isLoading ? null : _handleLogin,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.goldenYellow,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            child: isLoading
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        AppColor.black,
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    'Login',
+                                    style: context.fonts.titleMedium?.copyWith(
+                                      color: AppColor.black,
+                                    ),
+                                  ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 22),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(child: Divider(color: AppColor.yellow)),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                          Text(
+                            'Don\'t Have Account ? ',
+                            style: context.fonts.bodyMedium?.copyWith(
+                              color: AppColor.white,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.RegisterScreen.name,
+                              );
+                            },
                             child: Text(
-                              'OR',
+                              'Create One',
                               style: context.fonts.bodyMedium?.copyWith(
                                 color: AppColor.yellow,
                               ),
                             ),
                           ),
-                          Expanded(child: Divider(color: AppColor.yellow)),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 24),
-                    BlocBuilder<LoginViewModel, LoginState>(
-                      builder: (context, state) {
-                        final isLoading = state is LoginLoadingState;
-                        return ElevatedButton.icon(
-                          onPressed: isLoading ? null : _handleGoogleLogin,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColor.goldenYellow,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                      const SizedBox(height: 22),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        child: Row(
+                          children: [
+                            Expanded(child: Divider(color: AppColor.yellow)),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                'OR',
+                                style: context.fonts.bodyMedium?.copyWith(
+                                  color: AppColor.yellow,
+                                ),
+                              ),
                             ),
-                          ),
-                          icon: SvgPicture.asset(AppIcon.ic_google),
-                          label: Text(
-                            'Login With Google',
-                            style: context.fonts.titleMedium?.copyWith(
-                              color: AppColor.black,
+                            Expanded(child: Divider(color: AppColor.yellow)),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      BlocBuilder<LoginViewModel, LoginState>(
+                        builder: (context, state) {
+                          final isLoading = state is LoginLoadingState;
+                          return ElevatedButton.icon(
+                            onPressed: isLoading ? null : _handleGoogleLogin,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.goldenYellow,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                            icon: SvgPicture.asset(AppIcon.ic_google),
+                            label: Text(
+                              'Login With Google',
+                              style: context.fonts.titleMedium?.copyWith(
+                                color: AppColor.black,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
             ),
