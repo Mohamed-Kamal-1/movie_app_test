@@ -19,6 +19,11 @@ import '../../api/data_source_impl/delete_account_source_impl.dart' as _i859;
 import '../../api/data_source_impl/get_profile_impl.dart' as _i382;
 import '../../api/data_source_impl/movies_list_data_source_impl.dart' as _i116;
 import '../../api/data_source_impl/update_profile_source_impl.dart' as _i167;
+import '../../auth/data/auth_data_source/AuthDataSourceImpl.dart' as _i571;
+import '../../auth/data/auth_repository_impl/auth_repository_impl.dart'
+    as _i342;
+import '../../auth/domain/auth_repository/auth_repository.dart' as _i967;
+import '../../auth/presentation/auth_cubit/register_cubit.dart' as _i291;
 import '../../data/data_source/auth_data_source.dart' as _i862;
 import '../../data/data_source/delete_account_source.dart' as _i508;
 import '../../data/data_source/get_profile_source.dart' as _i261;
@@ -45,15 +50,12 @@ import '../../presentation/ui/home_screen/cubit/watch_now_view_model.dart'
     as _i185;
 import '../../presentation/ui/home_screen/provider/watch_now_section_view_model.dart'
     as _i863;
+import '../../presentation/ui/home_screen/cubit/browse_cubit.dart'
+    as _i542;
 import '../../presentation/ui/home_screen/tabs/search_tab/cubit/search_screen_view_model.dart'
     as _i341;
 import '../../ui/login_screen/login_view_model.dart' as _i103;
 import '../../ui/UpdateProfile/bloc/profile_view_model.dart' as _i1046;
-import '../../auth/data/auth_data_source/AuthDataSourceImpl.dart' as _i571;
-import '../../auth/data/auth_repository_impl/auth_repository_impl.dart'
-    as _i342;
-import '../../auth/domain/auth_repository/auth_repository.dart' as _i967;
-import '../../auth/presentation/auth_cubit/register_cubit.dart' as _i291;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -64,16 +66,16 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
-    gh.lazySingleton<_i361.Dio>(() => registerModule.dio());
-    gh.factory<_i571.AuthDataSourceImpl>(
-      () => _i571.AuthDataSourceImpl(gh<_i361.Dio>()),
-    );
     gh.singleton<_i149.ApiManager>(() => _i149.ApiManager());
+    gh.lazySingleton<_i361.Dio>(() => registerModule.dio());
     gh.factory<_i261.GetProfileSource>(
       () => _i382.GetProfileDataSourceImpl(gh<_i149.ApiManager>()),
     );
     gh.factory<_i709.UpdateProfileSource>(
       () => _i167.UpdateProfileSourceImpl(gh<_i149.ApiManager>()),
+    );
+    gh.lazySingleton<_i967.AuthRepository>(
+      () => _i342.AuthRepositoryImpl(gh<_i571.AuthDataSourceImpl>()),
     );
     gh.factory<_i1043.MoviesListDataSource>(
       () => _i116.MoviesListDataSourceImpl(gh<_i149.ApiManager>()),
@@ -83,6 +85,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i595.AuthRepo>(
       () => _i540.AuthRepoImpl(gh<_i862.AuthDataSource>()),
+    );
+    gh.factory<_i291.RegisterCubit>(
+      () => _i291.RegisterCubit(gh<_i967.AuthRepository>()),
     );
     gh.factory<_i508.DeleteAccountSource>(
       () => _i859.DeleteAccountSoucreImpl(gh<_i149.ApiManager>()),
@@ -102,14 +107,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i591.ProfileUseCase>(
       () => _i591.ProfileUseCase(gh<_i862.ProfileRepo>()),
     );
-    gh.lazySingleton<_i967.AuthRepository>(
-      () => _i342.AuthRepositoryImpl(gh<_i571.AuthDataSourceImpl>()),
-    );
     gh.factory<_i461.LoginUseCase>(
       () => _i461.LoginUseCase(gh<_i595.AuthRepo>()),
-    );
-    gh.factory<_i291.RegisterCubit>(
-      () => _i291.RegisterCubit(gh<_i967.AuthRepository>()),
     );
     gh.factory<_i686.DeleteAccountUseCase>(
       () => _i686.DeleteAccountUseCase(gh<_i567.DeleteAccountRepo>()),
@@ -136,6 +135,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i863.WatchNowSectionViewModel>(
       () => _i863.WatchNowSectionViewModel(gh<_i687.MoviesListUseCase>()),
+    );
+    gh.factory<_i542.BrowseCubit>(
+      () => _i542.BrowseCubit(gh<_i687.MoviesListUseCase>()),
     );
     gh.factory<_i341.SearchScreenViewModel>(
       () => _i341.SearchScreenViewModel(gh<_i687.MoviesListUseCase>()),

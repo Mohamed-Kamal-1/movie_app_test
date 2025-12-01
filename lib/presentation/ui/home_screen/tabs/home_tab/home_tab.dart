@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/hom_screen_state.dart';
-import 'package:movie_app/presentation/ui/home_screen/tabs/brows_tab/browse_creen.dart';
+import 'package:movie_app/presentation/ui/home_screen/tabs/brows_tab/browse_screen.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/home_screen.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/profile_tab/profile.dart';
-import 'package:movie_app/ui/user_profile_Screen/user_profile_screen.dart';
-
 import '../../../../../core/di/di.dart';
 import '../../cubit/home_screen_view_model.dart';
 import '../search_tab/search_screen.dart';

@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/extensions/extension.dart';
-
 import '../../core/colors/app_color.dart';
 
 class MoviesWidget extends StatefulWidget {
