@@ -8,8 +8,28 @@ class DetailsScreenInitialState extends DetailsScreenState {}
 
 class DetailsScreenLoadingState extends DetailsScreenState {}
 
+class MovieDetailsLoadingState extends DetailsScreenState {}
+
+class MovieDetailsSuccessState extends DetailsScreenState {
+  final MovieDetailsResponseDto movieDetailsResponse;
+
+  MovieDetailsSuccessState({required this.movieDetailsResponse});
+}
+
+class MovieDetailsErrorState extends DetailsScreenState {
+  final String message;
+
+  MovieDetailsErrorState({required this.message});
+}
+
+class SuggestionsLoadingState extends DetailsScreenState {
+  final MovieDetailsResponseDto? movieDetailsResponse;
+
+  SuggestionsLoadingState({this.movieDetailsResponse});
+}
+
 class DetailsScreenErrorState extends DetailsScreenState {
-  String message;
+  final String message;
 
   DetailsScreenErrorState({required this.message});
 }

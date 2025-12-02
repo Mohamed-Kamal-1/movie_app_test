@@ -37,12 +37,13 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeScreenViewModel, HomeScreenState>(
       bloc: viewModel,
+      buildWhen: (previous, current) =>
+          current is MoveToAnotherTabState ||
+          previous.runtimeType != current.runtimeType,
       builder: (context, state) {
-        int currentIndex = 0;
-        if (state is MoveToAnotherTabState) {
-          currentIndex = state.index ?? 0;
-
-        }
+        final currentIndex = state is MoveToAnotherTabState
+            ? (state.index ?? 0)
+            : 0;
         return Scaffold(
           bottomNavigationBar: AppBottomNavigationSection(
             onSelectedIndex: (index) {

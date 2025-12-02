@@ -17,6 +17,7 @@ import 'bloc/language_provider.dart';
 import 'package:provider/provider.dart';
 import 'core/di/di.dart';
 import 'package:movie_app/SharedPreferences/language_shared_preferences.dart';
+import 'package:movie_app/SharedPreferences/auth_shared_preferences.dart';
 
 
 
@@ -25,6 +26,7 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await AppSharedPreferences.init();
+  await AuthSharedPreferences.init();
   runApp(
     MultiProvider(
       providers: [
@@ -41,16 +43,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //   theme:
       darkTheme: AppTheme.Theme,
       themeMode: ThemeMode.dark,
-      //   locale: Locale(appLanguageProvider.getAppLanguage()),
       debugShowCheckedModeBanner: false,
-      //   localizationsDelegates: AppLocalizations.localizationsDelegates,
-      //   supportedLocales: AppLocalizations.supportedLocales,
-      initialRoute: AppRoutes.OnBoardingScreen.name,
+      home: const _InitialRoute(),
+      //initialRoute: AppRoutes.OnBoardingScreen.name,
       routes: {
-        AppRoutes.HomeTab.name: (context) => HomeTab(),
+        AppRoutes.HomeTab.name: (context) => const HomeTab(),
         AppRoutes.ProfileTab.name: (context) => ProfileTab(),
         AppRoutes.OnBoardingScreen.name: (context) => const OnBoardingScreen(),
         AppRoutes.BasicOnBoarding.name: (context) => const BasicOnBoarding(),
@@ -61,6 +60,62 @@ class MyApp extends StatelessWidget {
         AppRoutes.RegisterScreen.name: (context) => const RegisterScreen(),
         AppRoutes.DetailsScreen.name: (context) => const DetailsScreen(),
       },
+    );
+  }
+}
+
+class _InitialRoute extends StatefulWidget {
+  const _InitialRoute();
+
+  @override
+  State<_InitialRoute> createState() => _InitialRouteState();
+}
+
+class _InitialRouteState extends State<_InitialRoute> {
+  @override
+  void initState() {
+    super.initState();
+    _determineInitialRoute();
+  }
+
+  Future<void> _determineInitialRoute() async {
+    // Check if it's the first time
+    final isFirstTime = await AuthSharedPreferences.isFirstTime();
+    
+    // Check if user has a token
+    final token = AuthSharedPreferences.getToken();
+    
+    if (!mounted) return;
+    
+    // Routing logic:
+    // 1. If first time → OnBoardingScreen
+    // 2. If NOT first time AND token is null → LoginScreen
+    // 3. If token is NOT null → HomeTab
+    if (isFirstTime) {
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoutes.OnBoardingScreen.name,
+      );
+    } else if (token == null || token.isEmpty) {
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoutes.LoginScreen.name,
+      );
+    } else {
+      Navigator.pushReplacementNamed(
+        context,
+        AppRoutes.HomeTab.name,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // loading
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

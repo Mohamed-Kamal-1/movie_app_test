@@ -6,6 +6,7 @@ import 'package:movie_app/core/routes/app_routes.dart';
 import 'package:movie_app/extensions/extension.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/hom_screen_state.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/home_screen_view_model.dart';
+import 'package:movie_app/presentation/ui/home_screen/widgets/home_shimmer_widget.dart';
 
 import '../../../../../core/colors/app_color.dart';
 
@@ -48,7 +49,7 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
       bloc: widget.viewModel,
       builder: (context, state) {
         if (state is HomeLoadingState) {
-          return Center(child: CircularProgressIndicator());
+          return const AvailableNowShimmer();
         }
 
         if (state is HomeErrorState) {
@@ -70,11 +71,12 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                     child: CachedNetworkImage(
                       fit: BoxFit.fill,
                       imageUrl: state.moviesList![value].largeCoverImage ?? "",
-
-                      placeholder: (context, url) =>
-                          Center(child: CircularProgressIndicator()),
-
-                      errorWidget: (context, url, error) => Icon(
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColor.yellow,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(
                         Icons.broken_image,
                         size: 40,
                         color: Colors.grey,
@@ -137,10 +139,13 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                                 imageUrl:
                                     state.moviesList![index].mediumCoverImage ??
                                     "",
-                                placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator()),
+                                placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColor.yellow,
+                                  ),
+                                ),
 
-                                errorWidget: (context, url, error) => Icon(
+                                errorWidget: (context, url, error) => const Icon(
                                   Icons.broken_image,
                                   size: 40,
                                   color: Colors.grey,

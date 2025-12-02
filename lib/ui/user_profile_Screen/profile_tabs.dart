@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/colors/app_color.dart';
 import 'package:movie_app/ui/UpdateProfile/bloc/profile_screen_state.dart';
 import 'package:movie_app/ui/UpdateProfile/bloc/profile_view_model.dart';
+import 'widgets/profile_shimmer_widget.dart';
 
 
 class ProfileTabs extends StatelessWidget {
@@ -80,54 +81,83 @@ class WatchListViewContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileViewModel, ProfileScreenState>(
       builder: (context, state) {
-        switch (state) {
-          case ProfileMoviesListLoaded():
-            return GridView.builder(
-              padding: const EdgeInsets.all(12),
-              physics: const BouncingScrollPhysics(),
-              itemCount: state.list?.length ?? 0,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 0.7,
-              ),
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: AppColor.black,
-                    borderRadius: BorderRadius.circular(16)
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadiusGeometry.circular(16),
-                        child: Image.network(
-                          state.list![index].mediumCoverImage ?? "",
-                          fit: BoxFit.cover,
-                                        ),
-                      ),
-                      
-                      Container(
-                        margin: EdgeInsets.all(8),
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                       decoration: BoxDecoration(
-                         color: AppColor.gray,
-                         borderRadius: BorderRadius.circular(12)
-                       ),
-                    child: Text("${(state.list![index].rating.toString())} *",
-                    style: Theme.of(context).textTheme.titleSmall,)
-                      )
-
-                    ],
-                  )
-                );
-              },
-            );
-
-          case _:
-            return Center(child: Text("list is empty"));
+        if (state is ProfileLoadingState || state is ProfileInitialState) {
+          return const WatchListShimmer();
         }
+
+        if (state is ProfileMoviesListLoaded) {
+          if (state.list == null || state.list!.isEmpty) {
+            return const Center(
+              child: Text(
+                "list is empty",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+
+          return GridView.builder(
+            padding: const EdgeInsets.all(12),
+            physics: const BouncingScrollPhysics(),
+            itemCount: state.list!.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 0.7,
+            ),
+            itemBuilder: (context, index) {
+              final movie = state.list![index];
+              return Container(
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColor.black,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.network(
+                        movie.mediumCoverImage ?? "",
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: AppColor.gray,
+                            child: const Icon(
+                              Icons.broken_image,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColor.gray,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        "${movie.rating.toString()} *",
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+
+        return const Center(
+          child: Text(
+            "list is empty",
+            style: TextStyle(color: Colors.white),
+          ),
+        );
       },
     );
   }

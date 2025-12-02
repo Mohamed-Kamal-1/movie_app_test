@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/onboarding_bloc/onboarding_bloc.dart';
 import '../../core/routes/app_routes.dart';
+import '../../SharedPreferences/auth_shared_preferences.dart';
 import 'on_boarding_details.dart';
 
 class BasicOnBoarding extends StatelessWidget {
@@ -91,12 +92,16 @@ class _OnBoardingView extends StatelessWidget {
 
                       // NEXT / FINISH BUTTON
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (index == mySlides.length - 1) {
-                            Navigator.pushReplacementNamed(
-                              context,
-                              AppRoutes.LoginScreen.name,
-                            );
+                            // Mark that onboarding is complete (not first time anymore)
+                            await AuthSharedPreferences.setFirstTime(false);
+                            if (context.mounted) {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                AppRoutes.LoginScreen.name,
+                              );
+                            }
                           } else {
                             context.read<OnboardingBloc>().add(OnNextSlide());
                           }

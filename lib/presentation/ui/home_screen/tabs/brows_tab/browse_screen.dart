@@ -5,6 +5,7 @@ import '../../../../../core/colors/app_color.dart';
 import '../../../../../core/di/di.dart';
 import '../../../../../core/routes/app_routes.dart';
 import '../../cubit/browse_cubit.dart';
+import '../../widgets/browse_shimmer_widget.dart';
 import 'movie_card.dart';
 
 class BrowseScreen extends StatelessWidget {
@@ -28,11 +29,7 @@ class BrowseScreen extends StatelessWidget {
                   child: BlocBuilder<BrowseCubit, BrowseState>(
                     builder: (context, state) {
                       if (state is BrowseLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColor.goldenYellow,
-                          ),
-                        );
+                        return const BrowseShimmerWidget();
                       }
 
                       if (state is BrowseError) {
@@ -54,7 +51,7 @@ class BrowseScreen extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: state.genres.length,
                                 separatorBuilder: (_, __) =>
-                                const SizedBox(width: 8),
+                                    const SizedBox(width: 8),
                                 itemBuilder: (_, index) {
                                   final genre = state.genres[index];
                                   final isSelected = genre == state.selectedGenre;
@@ -75,7 +72,10 @@ class BrowseScreen extends StatelessWidget {
                                         ),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 8,
+                                        ),
                                         child: Text(
                                           genre,
                                           style: TextStyle(
@@ -106,11 +106,17 @@ class BrowseScreen extends StatelessWidget {
                                       childAspectRatio: .62,
                                     ),
                                 itemBuilder: (_, index) {
-                                  return MovieCard(movie: state.movies[index] , onTap: (){ Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.DetailsScreen.name,
-                                    arguments: state.movies[index].id,
-                                  );});
+                                  final movie = state.movies[index];
+                                  return MovieCard(
+                                    movie: movie,
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRoutes.DetailsScreen.name,
+                                        arguments: movie.id,
+                                      );
+                                    },
+                                  );
                                 },
                               ),
                             ),

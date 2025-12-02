@@ -55,13 +55,18 @@ class ProfileViewModel extends Cubit<ProfileScreenState> {
   }
 
   Future<void> getProfileMovies(String dateAdded) async {
-    List<MovieModel> response = await moviesListUseCase.getMoviesList(
-      dateAdded,
-    );
-    if (response.isEmpty) {
-      emit(ProfileMoviesListLoaded([]));
-    } else {
-      emit(ProfileMoviesListLoaded(response));
+    emit(ProfileLoadingState());
+    try {
+      final response = await moviesListUseCase.getMoviesList(
+        dateAdded,
+      );
+      if (response.isEmpty) {
+        emit(ProfileMoviesListLoaded([]));
+      } else {
+        emit(ProfileMoviesListLoaded(response));
+      }
+    } catch (e) {
+      emit(ProfileErrorState(e.toString()));
     }
   }
 }

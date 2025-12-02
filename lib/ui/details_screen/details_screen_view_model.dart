@@ -7,6 +7,9 @@ import 'package:movie_app/domain/use_case/movie_details_use_case.dart';
 import 'package:movie_app/domain/use_case/movie_suggestion_use_case.dart';
 import 'package:movie_app/ui/details_screen/details_screen_state.dart';
 
+import '../../api/model/movie_details/movie_details_response_dto.dart';
+import '../../api/model/movie_suggestion/movie_suggestion_response_dto.dart';
+
 @injectable
 class DetailsScreenViewModel extends Cubit<DetailsScreenState> {
   final MovieDetailsUseCase movieDetailsUseCase;
@@ -20,25 +23,87 @@ class DetailsScreenViewModel extends Cubit<DetailsScreenState> {
   ) : super(DetailsScreenInitialState());
 
   Future<void> getMovieDetailsAndSuggestions(String movieId) async {
+    // Start loading movie details first
+    emit(MovieDetailsLoadingState());
+    
+    // Load movie details
+    getMovieDetails(movieId);
+    
+    // Load suggestions separately (don't wait for details)
+    getMovieSuggestions(movieId);
+  }
+
+  MovieSuggestionResponseDto? _cachedSuggestions;
+  MovieDetailsResponseDto? _cachedDetails;
+
+  Future<void> getMovieDetails(String movieId) async {
     try {
-      emit(DetailsScreenLoadingState());
-
       final movieDetailsResponse = await movieDetailsUseCase.getMovieDetails(movieId);
-      final movieSuggestionResponse = await movieSuggestionUseCase.getMovieSuggestion(movieId);
 
-      if (movieDetailsResponse.status == "ok" &&
-          movieSuggestionResponse.status == "ok") {
-        emit(DetailsAndSuggestionsSuccessState(
-          movieDetailsResponse: movieDetailsResponse,
-          movieSuggestionResponse: movieSuggestionResponse,
-        ));
+      if (movieDetailsResponse.status == "ok") {
+        _cachedDetails = movieDetailsResponse;
+        
+        // Check if suggestions are already loaded
+        if (_cachedSuggestions != null) {
+          emit(DetailsAndSuggestionsSuccessState(
+            movieDetailsResponse: movieDetailsResponse,
+            movieSuggestionResponse: _cachedSuggestions!,
+          ));
+        } else {
+          emit(MovieDetailsSuccessState(
+            movieDetailsResponse: movieDetailsResponse,
+          ));
+        }
       } else {
-        emit(DetailsScreenErrorState(
-          message: "Something went wrong",
+        emit(MovieDetailsErrorState(
+          message: "Failed to load movie details",
         ));
       }
     } catch (e) {
-      emit(DetailsScreenErrorState(message: e.toString()));
+      emit(MovieDetailsErrorState(message: e.toString()));
+    }
+  }
+
+  Future<void> getMovieSuggestions(String movieId) async {
+    try {
+      // Get current state to preserve movie details if already loaded
+      final currentState = state;
+      MovieDetailsResponseDto? movieDetailsResponse;
+      
+      if (currentState is MovieDetailsSuccessState) {
+        movieDetailsResponse = currentState.movieDetailsResponse;
+        _cachedDetails = movieDetailsResponse;
+      } else if (currentState is DetailsAndSuggestionsSuccessState) {
+        movieDetailsResponse = currentState.movieDetailsResponse;
+        _cachedDetails = movieDetailsResponse;
+      } else if (currentState is SuggestionsLoadingState) {
+        movieDetailsResponse = currentState.movieDetailsResponse;
+        _cachedDetails = movieDetailsResponse;
+      }
+
+      // Emit loading state with existing movie details if available
+      if (movieDetailsResponse != null) {
+        emit(SuggestionsLoadingState(movieDetailsResponse: movieDetailsResponse));
+      }
+
+      final movieSuggestionResponse = await movieSuggestionUseCase.getMovieSuggestion(movieId);
+
+      if (movieSuggestionResponse.status == "ok") {
+        _cachedSuggestions = movieSuggestionResponse;
+        
+        // If we have movie details, emit combined success state
+        if (_cachedDetails != null) {
+          emit(DetailsAndSuggestionsSuccessState(
+            movieDetailsResponse: _cachedDetails!,
+            movieSuggestionResponse: movieSuggestionResponse,
+          ));
+        }
+        // If details not loaded yet, they will combine when details finish loading
+      }
+    } catch (e) {
+      // Don't emit error state for suggestions to avoid blocking the UI
+      // Just keep the current state (movie details should still be visible)
+      print('Error loading suggestions: $e');
     }
   }
 

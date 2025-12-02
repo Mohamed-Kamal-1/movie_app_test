@@ -352,13 +352,13 @@ class ApiManager {
   // TODO
   // profile API
   Future<ProfileResponseDto> getProfile()  async {
+    final token = AuthSharedPreferences.getToken();
     try {
       Response response = await authDio.get(
         Endpoints.profile,
         options: Options(
           headers: {
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmNiOWI1NDYwNTE4YTYyOGFlNDE5NSIsImVtYWlsIjoibW9oQDQ1NmdtYWlsLmNvbSIsImlhdCI6MTc2NDUzODk4MH0.O9BrX_F6mJ85ZTyxlmAooJNJXM8JnjiVx-6kPNqGOfs",
-          },
+            'Authorization': 'Bearer $token'          },
         ),
       );
 
@@ -400,8 +400,9 @@ class ApiManager {
 
 
   Future<UpdateProfileDto> updateProfile(String email , int avatarId)  async {
+    final token = AuthSharedPreferences.getToken();
     try {
-      Response response = await authDio.put(
+      Response response = await authDio.patch(
         Endpoints.profile,
         data: {
           'email': email,
@@ -409,7 +410,7 @@ class ApiManager {
         },
         options: Options(
           headers: {
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmNiOWI1NDYwNTE4YTYyOGFlNDE5NSIsImVtYWlsIjoibW9oQDQ1NmdtYWlsLmNvbSIsImlhdCI6MTc2NDUzODk4MH0.O9BrX_F6mJ85ZTyxlmAooJNJXM8JnjiVx-6kPNqGOfs",
+            "Authorization": "Bearer $token",
           },
         ),
       );
@@ -449,12 +450,13 @@ class ApiManager {
   }
 
   Future<DeleteAccountDto> deleteAccount()  async {
+    final token = AuthSharedPreferences.getToken();
     try {
       Response response = await authDio.delete(
         Endpoints.profile,
         options: Options(
           headers: {
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmNiOWI1NDYwNTE4YTYyOGFlNDE5NSIsImVtYWlsIjoibW9oQDQ1NmdtYWlsLmNvbSIsImlhdCI6MTc2NDUzODk4MH0.O9BrX_F6mJ85ZTyxlmAooJNJXM8JnjiVx-6kPNqGOfs",
+            "Authorization": "Bearer $token",
           },
         ),
       );

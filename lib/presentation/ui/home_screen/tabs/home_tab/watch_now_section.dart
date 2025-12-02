@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +6,7 @@ import 'package:movie_app/core/di/di.dart';
 import '../../../../../core/routes/app_routes.dart';
 import '../../cubit/watch_now_state.dart';
 import '../../cubit/watch_now_view_model.dart';
+import '../../widgets/home_shimmer_widget.dart';
 
 class WatchNowSection extends StatefulWidget {
   final String randomGenre;
@@ -33,7 +33,7 @@ class _WatchNowSectionState extends State<WatchNowSection> {
       bloc: viewModel,
       builder: (context, state) {
         if (state is WatchNowLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const WatchNowShimmer();
         }
 
         if (state is WatchNowError) {

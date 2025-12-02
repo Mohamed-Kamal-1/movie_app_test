@@ -35,8 +35,8 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return BlocListener<DetailsScreenViewModel, DetailsScreenState>(
       bloc: widget.viewModel,
@@ -67,17 +67,17 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
                     CachedNetworkImage(
                       height: height * 0.7,
                       imageUrl: widget.movieDetails.largeCoverImage ?? "",
-                      placeholder: (context, url) => Center(
+                      placeholder: (context, url) => const Center(
                         child: CircularProgressIndicator(color: AppColor.yellow),
                       ),
-                      errorWidget: (context, url, error) => Center(
+                      errorWidget: (context, url, error) => const Center(
                         child: Icon(Icons.error, color: Colors.red, size: 35),
                       ),
                     ),
                     Container(
                       width: double.infinity,
                       height: height * 0.7,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -190,7 +190,7 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
                     horizontal: width * 0.04,
                     vertical: height * 0.01,
                   ),
-                  child: ElevatedButton(
+                    child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -202,9 +202,9 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-
+                      minimumSize: Size(width * 0.9,60),
                       backgroundColor: AppColor.red,
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -274,12 +274,12 @@ class _CustomContainerWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         color: AppColor.gray,
       ),
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: AppColor.yellow, size: 20),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Flexible(
             child: Text(
               number,

@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> genres = ["Comedy", "Action", "Drama", "History"];
+    final List<String> genres = const ["Comedy", "Action", "Drama", "History"];
     final randomGenre = genres[Random().nextInt(genres.length)];
     return Column(
       children: [
