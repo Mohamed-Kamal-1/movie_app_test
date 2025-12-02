@@ -136,13 +136,23 @@ class WatchListViewContainer extends StatelessWidget {
                         horizontal: 8,
                         vertical: 4,
                       ),
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                        color: AppColor.gray,
+                        color: AppColor.black.withAlpha(171),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text(
-                        "${movie.rating.toString()} *",
-                        style: Theme.of(context).textTheme.titleSmall,
+                      width: 70,
+                      height: 30,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "${movie.rating.toString()} ",
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          Icon(Icons.star, color: AppColor.goldenYellow),
+                        ],
                       ),
                     ),
                   ],
