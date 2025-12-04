@@ -6,6 +6,7 @@ import 'package:movie_app/core/routes/app_routes.dart';
 import 'package:movie_app/extensions/extension.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/hom_screen_state.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/home_screen_view_model.dart';
+import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/rating_widget.dart';
 import 'package:movie_app/presentation/ui/home_screen/widgets/home_shimmer_widget.dart';
 
 import '../../../../../core/colors/app_color.dart';
@@ -22,7 +23,6 @@ class AvailableNowSection extends StatefulWidget {
 class _AvailableNowSectionState extends State<AvailableNowSection> {
   final PageController _pageController = PageController(viewportFraction: 0.65);
   final ValueNotifier<int> currentPage = ValueNotifier(0);
-  double? rate;
 
   @override
   void dispose() {
@@ -121,14 +121,23 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                             }
                             return Transform.scale(scale: value, child: child);
                           },
-                          child: Container(
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Stack(
-                              children: [
-                                GestureDetector(
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRoutes.DetailsScreen.name,
+                                      arguments: state.moviesList![index].id
+                                          .toString(),
+                                    );
+                                  },
                                   child: CachedNetworkImage(
                                     fit: BoxFit.fill,
                                     imageUrl:
@@ -149,20 +158,15 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                                           color: Colors.grey,
                                         ),
                                   ),
-
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      AppRoutes.DetailsScreen.name,
-                                      arguments: state.moviesList![index].id
-                                          .toString(),
-                                    );
-                                  },
                                 ),
-
-
-                              ],
-                            ),
+                              ),
+                              RatingWidget(
+                                rate: state
+                                    .moviesList![currentPage.value]
+                                    .rating!
+                                    .toStringAsFixed(1),
+                              ),
+                            ],
                           ),
                         );
                       },
