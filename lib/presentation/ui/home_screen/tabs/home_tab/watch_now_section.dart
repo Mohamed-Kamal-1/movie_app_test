@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/di/di.dart';
+import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/rating_widget.dart';
 
 import '../../../../../core/routes/app_routes.dart';
 import '../../cubit/watch_now_state.dart';
@@ -51,27 +52,36 @@ class _WatchNowSectionState extends State<WatchNowSection> {
             physics: const PageScrollPhysics(),
             itemCount: state.moviesList?.length ?? 0,
             itemBuilder: (context, index) {
-              return Container(
-                width: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.DetailsScreen.name,
-                      arguments: state.moviesList![index].id,
-                    );
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadiusGeometry.circular(20),
-                    child: CachedNetworkImage(
-                      imageUrl: state.moviesList![index].mediumCoverImage ?? "",
-                      fit: BoxFit.fill,
+              return Stack(
+                children: [
+                  Container(
+                    width: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.DetailsScreen.name,
+                          arguments: state.moviesList![index].id,
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadiusGeometry.circular(20),
+                        child: CachedNetworkImage(
+                          imageUrl:
+                              state.moviesList![index].mediumCoverImage ?? "",
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  RatingWidget(
+                    rate: state.moviesList![index].rating!.toStringAsFixed(1),
+
+                  ),
+                ],
               );
             },
             separatorBuilder: (context, index) => const SizedBox(width: 20),

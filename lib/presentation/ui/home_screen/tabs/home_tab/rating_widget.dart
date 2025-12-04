@@ -19,10 +19,7 @@ class RatingWidget extends StatelessWidget {
         color: AppColor.black.withAlpha(171),
         borderRadius: BorderRadiusGeometry.circular(10),
       ),
-     constraints: BoxConstraints(
-       maxWidth: 70,
-       maxHeight: 40
-     ),
+      constraints: BoxConstraints(maxWidth: 70, maxHeight: 40),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
