@@ -1,4 +1,5 @@
 enum AppRoutes {
+  InitialRoute,
   BasicOnBoarding,
   OnBoardingScreen,
   UpdateProfile,
