@@ -7,9 +7,9 @@ import 'package:movie_app/extensions/extension.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/hom_screen_state.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/home_screen_view_model.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/rating_widget.dart';
-import 'package:movie_app/presentation/ui/home_screen/widgets/home_shimmer_widget.dart';
 
 import '../../../../../core/colors/app_color.dart';
+import '../../widgets/home_shimmer_widget.dart';
 
 class AvailableNowSection extends StatefulWidget {
   final HomeScreenViewModel viewModel;

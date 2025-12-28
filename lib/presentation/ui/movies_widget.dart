@@ -6,8 +6,14 @@ import '../../core/colors/app_color.dart';
 class MoviesWidget extends StatefulWidget {
   final String? Function(int index)? imageBuilder;
   final int? moviesLength;
+  final String? rating;
 
-  const MoviesWidget({super.key, this.moviesLength, this.imageBuilder});
+  const MoviesWidget({
+    super.key,
+    this.moviesLength,
+    this.imageBuilder,
+    this.rating,
+  });
 
   @override
   State<MoviesWidget> createState() => _MoviesWidgetState();
@@ -32,20 +38,17 @@ class _MoviesWidgetState extends State<MoviesWidget> {
             itemBuilder: (context, index) {
               return Stack(
                 children: [
-                  CachedNetworkImage(imageUrl: widget.imageBuilder!(index)!,
+                  CachedNetworkImage(
+                    imageUrl: widget.imageBuilder!(index)!,
                     placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator(
-                        color: AppColor.yellow,
-                      ),
+                      child: CircularProgressIndicator(color: AppColor.yellow),
                     ),
 
-                    errorWidget: (context, url, error) =>
-                    const Icon(
+                    errorWidget: (context, url, error) => const Icon(
                       Icons.broken_image,
                       size: 40,
                       color: Colors.grey,
                     ),
-
                   ),
 
                   Container(
@@ -65,7 +68,7 @@ class _MoviesWidgetState extends State<MoviesWidget> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('7.7', style: context.fonts.titleSmall),
+                        Text(widget.rating ?? '7.7', style: context.fonts.titleSmall),
                         Icon(Icons.star, color: AppColor.goldenYellow),
                       ],
                     ),

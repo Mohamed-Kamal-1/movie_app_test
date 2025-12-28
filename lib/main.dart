@@ -4,6 +4,7 @@ import 'package:movie_app/core/app_theme/app_theme.dart';
 import 'package:movie_app/core/routes/app_routes.dart';
 import 'package:movie_app/presentation/OnBoarding/basic_on_boarding.dart';
 import 'package:movie_app/presentation/OnBoarding/on_boarding_screen.dart';
+import 'package:movie_app/presentation/initial_route.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/home_tab.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/profile_tab/profile.dart';
 import 'package:movie_app/ui/Register/register.dart';
@@ -19,8 +20,6 @@ import 'core/di/di.dart';
 import 'package:movie_app/SharedPreferences/language_shared_preferences.dart';
 import 'package:movie_app/SharedPreferences/auth_shared_preferences.dart';
 
-
-
 void main() async {
   configureDependencies();
   Bloc.observer = MyBlocObserver();
@@ -28,10 +27,8 @@ void main() async {
   await AppSharedPreferences.init();
   await AuthSharedPreferences.init();
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => LanguageProvider()),
-      ],
+    ChangeNotifierProvider(
+      create: (context) => LanguageProvider(),
       child: const MyApp(),
     ),
   );
@@ -46,10 +43,10 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.Theme,
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      home: const _InitialRoute(),
-      //initialRoute: AppRoutes.OnBoardingScreen.name,
+      initialRoute: AppRoutes.InitialRoute.name,
       routes: {
         AppRoutes.HomeTab.name: (context) => const HomeTab(),
+        AppRoutes.InitialRoute.name: (context) => const InitialRoute(),
         AppRoutes.ProfileTab.name: (context) => ProfileTab(),
         AppRoutes.OnBoardingScreen.name: (context) => const OnBoardingScreen(),
         AppRoutes.BasicOnBoarding.name: (context) => const BasicOnBoarding(),
@@ -60,62 +57,6 @@ class MyApp extends StatelessWidget {
         AppRoutes.RegisterScreen.name: (context) => const RegisterScreen(),
         AppRoutes.DetailsScreen.name: (context) => const DetailsScreen(),
       },
-    );
-  }
-}
-
-class _InitialRoute extends StatefulWidget {
-  const _InitialRoute();
-
-  @override
-  State<_InitialRoute> createState() => _InitialRouteState();
-}
-
-class _InitialRouteState extends State<_InitialRoute> {
-  @override
-  void initState() {
-    super.initState();
-    _determineInitialRoute();
-  }
-
-  Future<void> _determineInitialRoute() async {
-    // Check if it's the first time
-    final isFirstTime = await AuthSharedPreferences.isFirstTime();
-    
-    // Check if user has a token
-    final token = AuthSharedPreferences.getToken();
-    
-    if (!mounted) return;
-    
-    // Routing logic:
-    // 1. If first time → OnBoardingScreen
-    // 2. If NOT first time AND token is null → LoginScreen
-    // 3. If token is NOT null → HomeTab
-    if (isFirstTime) {
-      Navigator.pushReplacementNamed(
-        context,
-        AppRoutes.OnBoardingScreen.name,
-      );
-    } else if (token == null || token.isEmpty) {
-      Navigator.pushReplacementNamed(
-        context,
-        AppRoutes.LoginScreen.name,
-      );
-    } else {
-      Navigator.pushReplacementNamed(
-        context,
-        AppRoutes.HomeTab.name,
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // loading
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 }

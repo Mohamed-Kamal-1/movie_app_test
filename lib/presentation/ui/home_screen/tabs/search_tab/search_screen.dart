@@ -64,8 +64,12 @@ class _SearchScreenState extends State<SearchScreen> {
                       state.moviesList!.isNotEmpty) {
                     return MoviesWidget(
                       moviesLength: state.moviesList?.length ?? 0,
-                      imageBuilder: (index) =>
-                          state.moviesList![index].mediumCoverImage,
+                      imageBuilder: (index) {
+                        imageIndex = index;
+                        return state.moviesList![index].mediumCoverImage;
+                      },
+                      rating: successState.moviesList![imageIndex].rating!
+                          .toStringAsFixed(1),
                     );
                   } else {
                     return Center(
