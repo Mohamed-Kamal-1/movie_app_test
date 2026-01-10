@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/core/di/di.dart';
 import 'package:movie_app/core/images/app_image.dart';
 import 'package:movie_app/core/routes/app_routes.dart';
 import 'package:movie_app/extensions/extension.dart';
@@ -12,9 +13,7 @@ import '../../../../../core/colors/app_color.dart';
 import '../../widgets/home_shimmer_widget.dart';
 
 class AvailableNowSection extends StatefulWidget {
-  final HomeScreenViewModel viewModel;
-
-  const AvailableNowSection({super.key, required this.viewModel});
+  const AvailableNowSection({super.key});
 
   @override
   State<AvailableNowSection> createState() => _AvailableNowSectionState();
@@ -23,6 +22,7 @@ class AvailableNowSection extends StatefulWidget {
 class _AvailableNowSectionState extends State<AvailableNowSection> {
   final PageController _pageController = PageController(viewportFraction: 0.65);
   final ValueNotifier<int> currentPage = ValueNotifier(0);
+  late final HomeScreenViewModel viewModel;
 
   @override
   void dispose() {
@@ -34,20 +34,20 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
   @override
   void initState() {
     super.initState();
-
+    viewModel = getIt.get<HomeScreenViewModel>();
     _pageController.addListener(() {
       if (_pageController.hasClients && _pageController.page != null) {
         currentPage.value = _pageController.page!.round();
       }
     });
 
-    widget.viewModel.getMoviesList('2025-11-25');
+    viewModel.getMoviesList('2025-11-25');
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeScreenViewModel, HomeScreenState>(
-      bloc: widget.viewModel,
+      bloc: viewModel,
       builder: (context, state) {
         if (state is HomeLoadingState) {
           return const AvailableNowShimmer();

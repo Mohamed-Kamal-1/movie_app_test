@@ -30,7 +30,7 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     viewModel = getIt.get<HomeScreenViewModel>();
-    tabs = [HomeScreen(viewModel: viewModel), SearchScreen(), BrowseScreen(), ProfileTab()];
+    tabs = [HomeScreen(), SearchScreen(), BrowseScreen(), ProfileTab()];
   }
 
   @override
