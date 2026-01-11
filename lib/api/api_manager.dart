@@ -49,11 +49,17 @@ class ApiManager {
     );
   }
 
-  Future<MovieResponseDto> getMoviesList(String dateAdded) async {
+  Future<MovieResponseDto> getMoviesList(
+      {String dateAdded = "date_added" , String queryTerm = '0',limit = '20'}) async {
     try {
       Map<String, String> parameter = {
-        'sort_by': dateAdded,
+        'sort_by': dateAdded ,
         'order_by': 'desc',
+        'limit' : limit,
+        'movie_count':'10',
+
+
+        'query_term' : queryTerm,
       };
       Response response = await dio.get(
         Endpoints.moviesList,
@@ -125,7 +131,8 @@ class ApiManager {
   }
   Future<MovieResponseDto> getMoviesListByGenres(String genre) async {
     try {
-      Map<String, String> parameter = {'genre': genre};
+      Map<String, String> parameter = {'genre': genre,'limit' : '10',
+        'movie_count':'10',};
       Response response = await dio.get(
         Endpoints.moviesList,
         queryParameters: parameter,

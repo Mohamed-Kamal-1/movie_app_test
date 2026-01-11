@@ -11,38 +11,38 @@ class WatchNowSectionViewModel extends ChangeNotifier {
 
   WatchNowSectionState state = WatchNowSectionState();
 
-  void getMoviesListByGenres(String genre) async{
-    try {
-      var response = await moviesListUseCase.getMoviesListByGenres(genre);
-      var errorMessage = moviesListUseCase.getErrorMessage();
-      _sendState(
-        WatchNowSectionState(
-          loadingMessage: "please Wait...",
-          state: ScreenState.Loading,
-        ),
-      );
-
-      if (response.isEmpty) {
-        _sendState(
-          WatchNowSectionState(
-            state: ScreenState.Error,
-            errorMessage: errorMessage,
-          ),
-        );
-      } else {
-        _sendState(
-          WatchNowSectionState(state: ScreenState.Success, movies: response),
-        );
-      }
-    } catch (e) {
-      _sendState(
-        WatchNowSectionState(
-          state: ScreenState.Error,
-          errorMessage: e.toString(),
-        ),
-      );
-    }
-  }
+  // void getMoviesListByGenres(String genre) async{
+  //   try {
+  //     var response = await moviesListUseCase.getMoviesList(genre);
+  //     var errorMessage = moviesListUseCase.getErrorMessage();
+  //     _sendState(
+  //       WatchNowSectionState(
+  //         loadingMessage: "please Wait...",
+  //         state: ScreenState.Loading,
+  //       ),
+  //     );
+  //
+  //     if (response.isEmpty) {
+  //       _sendState(
+  //         WatchNowSectionState(
+  //           state: ScreenState.Error,
+  //           errorMessage: errorMessage,
+  //         ),
+  //       );
+  //     } else {
+  //       _sendState(
+  //         WatchNowSectionState(state: ScreenState.Success, movies: response),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     _sendState(
+  //       WatchNowSectionState(
+  //         state: ScreenState.Error,
+  //         errorMessage: e.toString(),
+  //       ),
+  //     );
+  //   }
+  // }
 
   void _sendState(WatchNowSectionState newState) {
     state = newState;

@@ -9,19 +9,15 @@ class MoviesListUseCase {
 
   MoviesListUseCase(this.moviesRepo);
 
-  Future<List<MovieModel>> getMoviesList(String dateAdded) {
-    return moviesRepo.getMoviesList(dateAdded);
+  Future<List<MovieModel>> getMoviesList({String? dateAdded = 'date_added', String? queryTerm = '0',String? limit = '20'}) {
+    return moviesRepo.getMoviesList(dateAdded,queryTerm,limit);
   }
-
+  Future<List<MovieModel>> getMoviesListByGenres(String genre) async {
+    return await moviesRepo.getMoviesListByGenres(genre);
+  }
   String getErrorMessage() {
     return moviesRepo.getErrorMessage();
   }
 
-  Future<List<MovieModel>> getMoviesListByGenres(String genre) async {
-    return await moviesRepo.getMoviesListByGenres(genre);
-  }
 
-  Future<List<MovieModel>> getMoviesListByTitle(String title) async {
-    return await moviesRepo.searchByMoveTitle(title);
-  }
 }

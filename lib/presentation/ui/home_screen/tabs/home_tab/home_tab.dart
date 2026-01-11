@@ -30,7 +30,7 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     viewModel = getIt.get<HomeScreenViewModel>();
-    tabs = [HomeScreen(), SearchScreen(), BrowseScreen(), ProfileTab()];
+    tabs = [HomeScreen(), SearchScreen(), BrowseScreen(), ProfileTab(movieId: context.read<HomeScreenViewModel>().moviedId,)];
   }
 
   @override
@@ -57,10 +57,7 @@ class _HomeTabState extends State<HomeTab> {
               },
             ),
           ),
-          body:IndexedStack(
-            index: currentIndex,
-            children: tabs,
-          ),
+          body: tabs[currentIndex],
         );
       },
     );

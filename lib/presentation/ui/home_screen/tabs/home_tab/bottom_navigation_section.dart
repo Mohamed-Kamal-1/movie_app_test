@@ -29,7 +29,11 @@ class _AppBottomNavigationSectionState
         hoverColor: Colors.transparent,
       ),
       child: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         useLegacyColorScheme: false,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
         backgroundColor: context.bottomNavBarTheme.backgroundColor,
         elevation: 0,
         selectedItemColor: AppColor.yellow,
@@ -44,53 +48,71 @@ class _AppBottomNavigationSectionState
         },
         currentIndex: selectedIndex,
 
+        // items: [
+        //   BottomNavigationBarItem(
+        //     icon: SvgPicture.asset(AppIcon.ic_home,),
+        //     activeIcon: SvgPicture.asset(
+        //       AppIcon.ic_home,
+        //
+        //       colorFilter: ColorFilter.mode(AppColor.yellow, BlendMode.srcIn),
+        //     ),
+        //
+        //     label: '',
+        //   ),
+        //   BottomNavigationBarItem(
+        //     icon: Container(
+        //       alignment: Alignment.center,
+        //       child: SvgPicture.asset(AppIcon.ic_search),
+        //     ),
+        //     activeIcon: Container(
+        //       alignment: Alignment.center,
+        //       child: SvgPicture.asset(
+        //         AppIcon.ic_search,
+        //         colorFilter: ColorFilter.mode(AppColor.yellow, BlendMode.srcIn),
+        //       ),
+        //     ),
+        //     label: '',
+        //   ),
+        //   BottomNavigationBarItem(
+        //     icon: SvgPicture.asset(AppIcon.ic_compass),
+        //     activeIcon: SvgPicture.asset(
+        //       AppIcon.ic_compass,
+        //       colorFilter: ColorFilter.mode(AppColor.yellow, BlendMode.srcIn),
+        //     ),
+        //
+        //     label: '',
+        //   ),
+        //   BottomNavigationBarItem(
+        //     icon: SvgPicture.asset(AppIcon.ic_profile),
+        //     activeIcon: SvgPicture.asset(
+        //       AppIcon.ic_profile,
+        //       colorFilter: ColorFilter.mode(AppColor.yellow, BlendMode.srcIn),
+        //     ),
+        //
+        //     label: '',
+        //   ),
+        // ],
         items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppIcon.ic_home, height: 30),
-            activeIcon: SvgPicture.asset(
-              AppIcon.ic_home,
-              height: 25,
-
-              colorFilter: ColorFilter.mode(AppColor.yellow, BlendMode.srcIn),
-            ),
-
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-              alignment: Alignment.center,
-              width: 24,
-              height: 24,
-              child: SvgPicture.asset(AppIcon.ic_search),
-            ),
-            activeIcon: SvgPicture.asset(
-              AppIcon.ic_search,
-              colorFilter: ColorFilter.mode(AppColor.yellow, BlendMode.srcIn),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppIcon.ic_compass),
-            activeIcon: SvgPicture.asset(
-              AppIcon.ic_compass,
-              colorFilter: ColorFilter.mode(AppColor.yellow, BlendMode.srcIn),
-            ),
-
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppIcon.ic_profile),
-            activeIcon: SvgPicture.asset(
-              AppIcon.ic_profile,
-              colorFilter: ColorFilter.mode(AppColor.yellow, BlendMode.srcIn),
-            ),
-
-            label: '',
-          ),
+          _buildNavItem(AppIcon.ic_home),
+          _buildNavItem(AppIcon.ic_search),
+          _buildNavItem(AppIcon.ic_compass),
+          _buildNavItem(AppIcon.ic_profile),
         ],
       ),
     );
   }
 
+  BottomNavigationBarItem _buildNavItem(String iconPath) {
+    return BottomNavigationBarItem(
+      icon: Container(child: SvgPicture.asset(iconPath),
+      ),
 
+      activeIcon: SvgPicture.asset(
+        iconPath,
+        colorFilter: const ColorFilter.mode(AppColor.yellow, BlendMode.srcIn),
+      ),
+      label:
+          '', // لا يزال مطلوباً كـ String لكنه لن يظهر مساحة بسبب showSelectedLabels: false
+    );
+  }
 }

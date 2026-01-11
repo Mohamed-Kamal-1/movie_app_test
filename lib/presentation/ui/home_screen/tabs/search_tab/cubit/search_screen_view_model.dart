@@ -21,9 +21,7 @@ class SearchScreenViewModel extends Cubit<SearchScreenState> {
     }
     try {
       emit(SearchLoadingState());
-      List<MovieModel> response = await moviesListUseCase.getMoviesListByTitle(
-        title,
-      );
+      List<MovieModel> response = await moviesListUseCase.getMoviesList(queryTerm: _lastQuery);
       if (_lastQuery != title) return;
 
       if (response.isEmpty) {

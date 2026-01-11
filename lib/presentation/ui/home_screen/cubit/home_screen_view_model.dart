@@ -8,16 +8,16 @@ import '../../../../domain/use_case/movies_list.dart';
 @injectable
 class HomeScreenViewModel extends Cubit<HomeScreenState> {
   MoviesListUseCase moviesListUseCase;
-
+  late int moviedId;
   HomeScreenViewModel(this.moviesListUseCase) : super(HomeInitialState());
 
   Future<void> getMoviesList(String dateAdded) async {
     var errorMessage = moviesListUseCase.getErrorMessage();
+
     try {
       emit(HomeLoadingState());
       List<MovieModel> response = await moviesListUseCase.getMoviesList(
-        dateAdded,
-      );
+          dateAdded: dateAdded, limit: '10');
       if (response.isEmpty) {
         emit(HomeErrorState(errorMessage: errorMessage));
       } else {

@@ -57,7 +57,7 @@ class ProfileViewModel extends Cubit<ProfileScreenState> {
     emit(ProfileLoadingState());
     try {
       final response = await moviesListUseCase.getMoviesList(
-        dateAdded,
+        dateAdded: dateAdded,
       );
       if (response.isEmpty) {
         emit(ProfileMoviesListLoaded([]));

@@ -131,6 +131,9 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
+                                    state.moviesList![index].id = context
+                                        .read<HomeScreenViewModel>()
+                                        .moviedId;
                                     Navigator.pushNamed(
                                       context,
                                       AppRoutes.DetailsScreen.name,

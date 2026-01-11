@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       routes: {
         AppRoutes.HomeTab.name: (context) => const HomeTab(),
         AppRoutes.InitialRoute.name: (context) => const InitialRoute(),
-        AppRoutes.ProfileTab.name: (context) => ProfileTab(),
+        AppRoutes.ProfileTab.name: (context) => ProfileTab(movieId: 0,),
         AppRoutes.OnBoardingScreen.name: (context) => const OnBoardingScreen(),
         AppRoutes.BasicOnBoarding.name: (context) => const BasicOnBoarding(),
         AppRoutes.UpdateProfile.name: (context) => UpdateProfileScreen(),

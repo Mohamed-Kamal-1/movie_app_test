@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/domain/model/movie_model.dart';
+
 import '../../../../domain/use_case/movies_list.dart';
+
 part 'browse_state.dart';
 
 @injectable
@@ -18,7 +20,7 @@ class BrowseCubit extends Cubit<BrowseState> {
     emit(BrowseLoading());
 
     try {
-      allMovies = await moviesListUseCase.getMoviesList("2025");
+      allMovies = await moviesListUseCase.getMoviesList(dateAdded: "2025");
 
       /// Load Genres
       _extractGenres();
@@ -67,7 +69,7 @@ class BrowseCubit extends Cubit<BrowseState> {
     emit(BrowseLoading());
 
     try {
-      filteredMovies = await moviesListUseCase.getMoviesListByTitle(title);
+      filteredMovies = await moviesListUseCase.getMoviesList(queryTerm: title);
 
       emit(BrowseLoaded(
         movies: filteredMovies,

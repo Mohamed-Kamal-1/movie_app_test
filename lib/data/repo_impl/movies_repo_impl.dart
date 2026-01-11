@@ -11,10 +11,13 @@ class MoviesRepoImpl implements MoviesRepo {
   MoviesRepoImpl(this.moviesListDataSource);
 
   @override
-  Future<List<MovieModel>> getMoviesList(String dateAdded) async {
-    return await moviesListDataSource.getMoviesList(dateAdded);
+  Future<List<MovieModel>> getMoviesList(String? dateAdded,String? queryTerm,String? limit) async {
+    return await moviesListDataSource.getMoviesList(dateAdded,queryTerm,limit);
   }
-
+  @override
+  Future<List<MovieModel>> getMoviesListByGenres(String genre) {
+    return moviesListDataSource.getMoviesListByGenres(genre);
+  }
   @override
   String getErrorMessage() {
     return moviesListDataSource.getErrorMessage();
@@ -25,13 +28,4 @@ class MoviesRepoImpl implements MoviesRepo {
     return moviesListDataSource.getErrorStatusCode();
   }
 
-  @override
-  Future<List<MovieModel>> getMoviesListByGenres(String genre) {
-    return moviesListDataSource.getMoviesListByGenres(genre);
-  }
-
-  @override
-  Future<List<MovieModel>> searchByMoveTitle(String title) {
-    return moviesListDataSource.searchByMoveTitle(title);
-  }
 }
