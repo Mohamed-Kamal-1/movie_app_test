@@ -4,6 +4,7 @@ import 'package:movie_app/presentation/ui/home_screen/cubit/hom_screen_state.dar
 import 'package:movie_app/presentation/ui/home_screen/tabs/brows_tab/browse_screen.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/home_screen.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/profile_tab/profile.dart';
+
 import '../../../../../core/di/di.dart';
 import '../../cubit/home_screen_view_model.dart';
 import '../search_tab/search_screen.dart';
@@ -24,7 +25,12 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     viewModel = getIt.get<HomeScreenViewModel>();
-    tabs = [HomeScreen(), SearchScreen(), BrowseScreen(), ProfileTab(movieId: context.read<HomeScreenViewModel>().moviedId,)];
+    tabs = [
+      const HomeScreen(),
+      const SearchScreen(),
+      const BrowseScreen(),
+      const ProfileTab(),
+    ];
   }
 
   @override
@@ -39,7 +45,8 @@ class _HomeTabState extends State<HomeTab> {
             ? (state.index ?? 0)
             : 0;
         return Scaffold(
-          bottomNavigationBar: Container(
+
+        bottomNavigationBar: Container(
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(37),

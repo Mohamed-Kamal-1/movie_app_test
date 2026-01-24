@@ -8,8 +8,10 @@ import '../../../../domain/use_case/movies_list.dart';
 @injectable
 class HomeScreenViewModel extends Cubit<HomeScreenState> {
   MoviesListUseCase moviesListUseCase;
-  late int moviedId;
+
+
   HomeScreenViewModel(this.moviesListUseCase) : super(HomeInitialState());
+
 
   Future<void> getMoviesList(String dateAdded) async {
     var errorMessage = moviesListUseCase.getErrorMessage();
@@ -28,7 +30,17 @@ class HomeScreenViewModel extends Cubit<HomeScreenState> {
     }
   }
 
+  void getMovieRating(String? movieId) async {
+    try {
+      String? rating = await moviesListUseCase.getMovieRating(movieId);
+      emit(RatingSuccess(rating));
+    } catch (e) {
+      emit(HomeErrorState(errorMessage: e.toString()));
+    }
+  }
   void moveAnotherTab(int index) {
     emit(MoveToAnotherTabState(index: index));
   }
+
+
 }

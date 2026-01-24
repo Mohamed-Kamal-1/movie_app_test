@@ -1,15 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
+import 'package:movie_app/SharedPreferences/auth_shared_preferences.dart';
 import 'package:movie_app/api/endpoints/endpoints.dart';
-import 'package:movie_app/api/model/movie_list/movie_response_dto.dart';
-import 'package:movie_app/api/model/movie_details/movie_details_response_dto.dart';
-import 'package:movie_app/api/model/movie_suggestion/movie_suggestion_response_dto.dart';
 import 'package:movie_app/api/model/favourite/add_to_favourite_data_model.dart';
 import 'package:movie_app/api/model/favourite/add_to_favourite_response_model.dart';
 import 'package:movie_app/api/model/favourite/get_all_favourite_model.dart';
 import 'package:movie_app/api/model/favourite/is_favourite_model.dart';
 import 'package:movie_app/api/model/favourite/remove_from_favourite_model.dart';
-import 'package:movie_app/SharedPreferences/auth_shared_preferences.dart';
+import 'package:movie_app/api/model/movie_details/movie_details_response_dto.dart';
+import 'package:movie_app/api/model/movie_list/Rating_dto.dart';
+import 'package:movie_app/api/model/movie_list/movie_response_dto.dart';
+import 'package:movie_app/api/model/movie_suggestion/movie_suggestion_response_dto.dart';
 import 'package:movie_app/api/model/profile/delete_account_dto.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -74,6 +76,32 @@ class ApiManager {
           message: "Failed to load Movies",
         );
       }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw Exception('connection Time out');
+      } else if (e.type == DioExceptionType.receiveTimeout) {
+        throw Exception('connection Time out ');
+      } else if (e.type == DioExceptionType.receiveTimeout) {
+        throw Exception('connection Time out');
+      }
+      rethrow;
+    }
+  }
+
+  Future<RatingDto> getMoviesRating(String? movieId) async {
+    final String _apiKey = dotenv.env['RAPID_API_KEY'] ?? '';
+
+    try {
+      Response response = await dio.get(
+          'https://imdb236.p.rapidapi.com/api/imdb/${movieId}/rating',
+          options: Options(
+
+            headers: {'X-Rapidapi-Key': _apiKey},
+          )
+      );
+      RatingDto ratingResponse = RatingDto.fromJson(response.data);
+
+      return ratingResponse;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout) {
         throw Exception('connection Time out');

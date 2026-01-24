@@ -30,7 +30,7 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
   @override
   void initState() {
     super.initState();
-    widget.viewModel.checkIsFavourite(widget.movieDetails.id.toString());
+    // widget.viewModel.checkIsFavourite(widget.movieDetails.id.toString());
   }
 
   @override
@@ -40,17 +40,18 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
 
     return BlocListener<DetailsScreenViewModel, DetailsScreenState>(
       bloc: widget.viewModel,
-      listener: (context, state) {
-        if (state is IsFavouriteSuccessState) {
-          setState(() {
-            isFavourite = state.isFavouriteModel.data ?? false;
-          });
-        } else if (state is AddToFavouriteSuccessState) {
-          widget.viewModel.checkIsFavourite(widget.movieDetails.id.toString());
-        } else if (state is RemoveFromFavouriteSuccessState) {
-          widget.viewModel.checkIsFavourite(widget.movieDetails.id.toString());
-        }
-      },
+      // listener: (context, state) {
+      //   if (state is IsFavouriteSuccessState) {
+      //     setState(() {
+      //       isFavourite = state.isFavouriteModel.data ?? false;
+      //     });
+      //   } else if (state is AddToFavouriteSuccessState) {
+      //     widget.viewModel.checkIsFavourite(widget.movieDetails.id.toString());
+      //   } else if (state is RemoveFromFavouriteSuccessState) {
+      //     widget.viewModel.checkIsFavourite(widget.movieDetails.id.toString());
+      //   }
+      // },
+       listener: (BuildContext context, DetailsScreenState state) {  },
       child: BlocBuilder<DetailsScreenViewModel, DetailsScreenState>(
         bloc: widget.viewModel,
         buildWhen: (previous, current) =>
@@ -113,42 +114,45 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
                                   height: 28,
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  if (!isFavourite) {
-                                    final addFavouriteData =
-                                        AddToFavouriteDataModel(
-                                      imageURL: widget.movieDetails.largeCoverImage,
-                                      movieId:
-                                          widget.movieDetails.id.toString(),
-                                      name: widget.movieDetails.title,
-                                      rating: widget.movieDetails.rating,
-                                      year: widget.movieDetails.year?.toString(),
-                                    );
-                                    widget.viewModel.addMovieToFavourite(
-                                      addFavouriteData: addFavouriteData,
-                                    );
-                                  } else {
-                                    widget.viewModel.removeFromFavourite(
-                                      widget.movieDetails.id.toString(),
-                                    );
-                                  }
-                                },
-                                child: Image.asset(
-                                  AppImage.bookmarkIcon,
-                                  width: 28,
-                                  height: 28,
-                                  color: isFavourite
-                                      ? AppColor.yellow
-                                      : AppColor.white,
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     if (!isFavourite) {
+                              //       final addFavouriteData =
+                              //           AddToFavouriteDataModel(
+                              //         imageURL: widget.movieDetails.largeCoverImage,
+                              //         movieId:
+                              //             widget.movieDetails.id.toString(),
+                              //         name: widget.movieDetails.title,
+                              //         rating: widget.movieDetails.rating,
+                              //         year: widget.movieDetails.year?.toString(),
+                              //       );
+                              //       widget.viewModel.addMovieToFavourite(
+                              //         addFavouriteData: addFavouriteData,
+                              //       );
+                              //     } else {
+                              //       widget.viewModel.removeFromFavourite(
+                              //         widget.movieDetails.id.toString(),
+                              //       );
+                              //     }
+                              //   },
+                              //   child: Image.asset(
+                              //     AppImage.bookmarkIcon,
+                              //     width: 28,
+                              //     height: 28,
+                              //     color: isFavourite
+                              //         ? AppColor.yellow
+                              //         : AppColor.white,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
                         SizedBox(height: height * 0.21),
                         Center(
-                          child: InkWell(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+
+
                             onTap: () {
                               Navigator.push(
                                 context,

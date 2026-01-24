@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/di/di.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/rating_widget.dart';
 
-import '../../../../../core/routes/app_routes.dart';
+import '../../../../../ui/details_screen/details_screen.dart';
 import '../../cubit/watch_now_state.dart';
 import '../../cubit/watch_now_view_model.dart';
 import '../../widgets/home_shimmer_widget.dart';
@@ -40,7 +40,7 @@ class _WatchNowSectionState extends State<WatchNowSection> {
         if (state is WatchNowError) {
           return Center(
             child: Text(
-              state.errorMessage!,
+              state.errorMessage ?? "something went wrong",
               style: const TextStyle(color: Colors.white),
             ),
           );
@@ -61,26 +61,28 @@ class _WatchNowSectionState extends State<WatchNowSection> {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(
+                        // print(state.moviesList?[index].imdbCode);
+                        Navigator.push(
                           context,
-                          AppRoutes.DetailsScreen.name,
-                          arguments: state.moviesList![index].id,
+                          MaterialPageRoute(
+                            builder: (context) => DetailsScreen(
+                              movieId: state.moviesList?[index].id.toString(),
+                            ),
+                          ),
                         );
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadiusGeometry.circular(20),
                         child: CachedNetworkImage(
                           imageUrl:
-                              state.moviesList![index].mediumCoverImage ?? "",
+                              state.moviesList?[index].mediumCoverImage ?? "",
                           fit: BoxFit.fill,
                         ),
                       ),
                     ),
                   ),
-                  RatingWidget(
-                    rate: state.moviesList![index].rating!.toStringAsFixed(1),
+                  RatingWidget(movieId: state.moviesList?[index].imdbCode ?? '0',),
 
-                  ),
                 ],
               );
             },

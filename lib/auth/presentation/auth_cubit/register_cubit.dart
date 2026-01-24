@@ -31,11 +31,11 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       result.fold(
         (failure) {
-          print("Register failed: ${failure.message}");
+          // print("Register failed: ${failure.message}");
           emit(ErrorState(message: failure.message));
         },
         (authResult) {
-          print("Register success: ${authResult.data}");
+          // print("Register success: ${authResult.data}");
           // لو data موجودة استخدمها، ولو لأ خلي SuccessState من غير مشاكل
           emit(SuccessState(authResult));
         },

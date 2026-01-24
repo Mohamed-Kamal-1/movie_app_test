@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/api/api_manager.dart';
+import 'package:movie_app/api/model/movie_list/Rating_dto.dart';
 import 'package:movie_app/domain/model/movie_model.dart';
 
 import '../../data/data_source/movies_list_data_source.dart';
@@ -48,6 +49,12 @@ class MoviesListDataSourceImpl implements MoviesListDataSource {
             ?.map((moviesDto) => moviesDto.getMoviesList())
             .toList() ??
         [];
+  }
+
+  @override
+  Future<String> getMoviesRating(String? movieId) async {
+    RatingDto response = await apiManager.getMoviesRating(movieId);
+    return response.averageRating.toString();
   }
 
 }

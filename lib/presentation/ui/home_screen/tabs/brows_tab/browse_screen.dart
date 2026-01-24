@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../core/colors/app_color.dart';
 import '../../../../../core/di/di.dart';
-import '../../../../../core/routes/app_routes.dart';
+import '../../../../../ui/details_screen/details_screen.dart';
 import '../../cubit/browse_cubit.dart';
 import '../../widgets/browse_shimmer_widget.dart';
 import 'movie_card.dart';
@@ -23,7 +24,7 @@ class BrowseScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 12),
-                /// STATE builder
+
                 Expanded(
                   child: BlocBuilder<BrowseCubit, BrowseState>(
                     builder: (context, state) {
@@ -43,7 +44,6 @@ class BrowseScreen extends StatelessWidget {
                       if (state is BrowseLoaded) {
                         return Column(
                           children: [
-                            /// GENRE CHIPS
                             SizedBox(
                               height: 40,
                               child: ListView.separated(
@@ -92,31 +92,35 @@ class BrowseScreen extends StatelessWidget {
                             ),
 
                             const SizedBox(height: 16),
-
-                            /// MOVIES GRID
                             Expanded(
-                              child: GridView.builder(
-                                itemCount: state.movies.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 12,
-                                      mainAxisSpacing: 12,
-                                      childAspectRatio: .62,
-                                    ),
-                                itemBuilder: (_, index) {
-                                  final movie = state.movies[index];
-                                  return MovieCard(
-                                    movie: movie,
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        AppRoutes.DetailsScreen.name,
-                                        arguments: movie.id,
-                                      );
-                                    },
-                                  );
-                                },
+                              child: RepaintBoundary(
+                                child: GridView.builder(
+                                  itemCount: state.movies.length,
+                                  gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12,
+                                    childAspectRatio: .62,
+                                  ),
+                                  itemBuilder: (_, index) {
+                                    final movie = state.movies[index];
+                                    return MovieCard(
+                                      movie: movie,
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailsScreen(
+                                                  movieId: movie.id.toString(),
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ],

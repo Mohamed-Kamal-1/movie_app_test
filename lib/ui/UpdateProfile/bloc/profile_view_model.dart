@@ -47,7 +47,7 @@ class ProfileViewModel extends Cubit<ProfileScreenState> {
     emit(ProfileLoadingState());
     try {
       await _deleteAccountUseCase.deleteAccount();
-      print("acc deleted");
+      // print("acc deleted");
     } catch (e) {
       emit(ProfileErrorState(e.toString()));
     }

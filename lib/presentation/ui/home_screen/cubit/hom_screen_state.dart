@@ -15,7 +15,6 @@ class HomeErrorState extends HomeScreenState {
 class HomeSuccessState extends HomeScreenState {
   List<MovieModel>? moviesList;
 
-  // List<String>
 
   HomeSuccessState({this.moviesList});
 }
@@ -32,3 +31,8 @@ class changeGenre extends HomeScreenState {
   changeGenre({this.index});
 }
 
+class RatingSuccess extends HomeScreenState {
+  String? rating;
+
+  RatingSuccess(this.rating);
+}

@@ -18,6 +18,9 @@ class MoviesListUseCase {
   String getErrorMessage() {
     return moviesRepo.getErrorMessage();
   }
+  Future<String> getMovieRating(String? movieId)async{
+    return await moviesRepo.getMoviesRating(movieId);
+  }
 
 
 }

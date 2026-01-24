@@ -1,5 +1,6 @@
 abstract class Endpoints {
   static const String moviesList = 'list_movies.json';
+
   static const String login = "auth/login";
   static const String getMovieDetails = 'https://yts.lt/api/v2/movie_details.json';
   static const String getMovieSuggestion ='https://yts.lt/api/v2/movie_suggestions.json';
