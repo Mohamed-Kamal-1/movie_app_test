@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:movie_app/SharedPreferences/auth_shared_preferences.dart';
 import 'package:movie_app/api/endpoints/endpoints.dart';
-import 'package:movie_app/api/model/movie_list/movie_response_dto.dart';
-import 'package:movie_app/api/model/movie_details/movie_details_response_dto.dart';
-import 'package:movie_app/api/model/movie_suggestion/movie_suggestion_response_dto.dart';
 import 'package:movie_app/api/model/favourite/add_to_favourite_data_model.dart';
 import 'package:movie_app/api/model/favourite/add_to_favourite_response_model.dart';
 import 'package:movie_app/api/model/favourite/get_all_favourite_model.dart';
 import 'package:movie_app/api/model/favourite/is_favourite_model.dart';
 import 'package:movie_app/api/model/favourite/remove_from_favourite_model.dart';
-import 'package:movie_app/SharedPreferences/auth_shared_preferences.dart';
+import 'package:movie_app/api/model/movie_details/movie_details_response_dto.dart';
+import 'package:movie_app/api/model/movie_list/Rating_dto.dart';
+import 'package:movie_app/api/model/movie_list/movie_response_dto.dart';
+import 'package:movie_app/api/model/movie_suggestion/movie_suggestion_response_dto.dart';
 import 'package:movie_app/api/model/profile/delete_account_dto.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -51,14 +52,11 @@ class ApiManager {
 
   Future<MovieResponseDto> getMoviesList(
       {String dateAdded = "date_added" , String queryTerm = '0',limit = '20'}) async {
-    try {
       Map<String, String> parameter = {
         'sort_by': dateAdded ,
         'order_by': 'desc',
         'limit' : limit,
         'movie_count':'10',
-
-
         'query_term' : queryTerm,
       };
       Response response = await dio.get(
@@ -66,25 +64,42 @@ class ApiManager {
         queryParameters: parameter,
       );
       MovieResponseDto movieResponse = MovieResponseDto.fromJson(response.data);
-      if (movieResponse.status == 'ok') {
         return movieResponse;
-      } else {
-        throw DioException(
-          requestOptions: response.requestOptions,
-          message: "Failed to load Movies",
-        );
-      }
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('connection Time out');
-      } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('connection Time out ');
-      } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('connection Time out');
-      }
-      rethrow;
-    }
   }
+
+  Future<RatingDto> getMovieRating(String imdbCode) async {
+    Response response = await dio.get(
+        'https://imdb236.p.rapidapi.com/api/imdb/$imdbCode/rating'
+    );
+    RatingDto ratingResponse = RatingDto.fromJson(response.data);
+    return ratingResponse;
+  }
+
+  Future<MovieResponseDto> getMoviesListByGenres(String genre) async {
+    Map<String, String> parameter = {'genre': genre, 'limit': '10',
+        'movie_count':'10',};
+      Response response = await dio.get(
+        Endpoints.moviesList,
+        queryParameters: parameter,
+      );
+      MovieResponseDto movieResponse = MovieResponseDto.fromJson(response.data);
+        return movieResponse;
+  }
+  Future<MovieDetailsResponseDto> getMovieDetails(String movieId) async {
+    Map<String, String> parameter = {
+        'movie_id': movieId,
+        'with_cast': 'true',
+        'with_images': 'true',
+      };
+      Response response = await dio.get(
+        Endpoints.getMovieDetails,
+        queryParameters: parameter,
+      );
+      MovieDetailsResponseDto movieDetailsResponse = MovieDetailsResponseDto.fromJson(response.data);
+        return movieDetailsResponse;
+  }
+
+
   Future<LoginResponseDto> login(String email, String password) async {
     try {
       Response response = await authDio.post(
@@ -94,7 +109,7 @@ class ApiManager {
           'password': password,
         },
       );
-      
+
       // Check if response status code indicates success (200-299)
       if (response.statusCode != null &&
           response.statusCode! >= 200 &&
@@ -111,7 +126,8 @@ class ApiManager {
     } on DioException catch (e) {
       // Handle Dio errors (network, timeout, etc.)
       if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('Connection timeout. Please check your internet connection.');
+        throw Exception(
+            'Connection timeout. Please check your internet connection.');
       } else if (e.type == DioExceptionType.receiveTimeout) {
         throw Exception('Request timeout. Please try again.');
       } else if (e.type == DioExceptionType.badResponse && e.response != null) {
@@ -129,62 +145,6 @@ class ApiManager {
       rethrow;
     }
   }
-  Future<MovieResponseDto> getMoviesListByGenres(String genre) async {
-    try {
-      Map<String, String> parameter = {'genre': genre,'limit' : '10',
-        'movie_count':'10',};
-      Response response = await dio.get(
-        Endpoints.moviesList,
-        queryParameters: parameter,
-      );
-      MovieResponseDto movieResponse = MovieResponseDto.fromJson(response.data);
-      if (movieResponse.status == 'ok') {
-        return movieResponse;
-      } else {
-        throw DioException(
-          requestOptions: response.requestOptions,
-          message: "Failed to load Movies",
-        );
-      }
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('connection Time out');
-      } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('connection Time out');
-      }
-      rethrow;
-    }
-  }
-  Future<MovieDetailsResponseDto> getMovieDetails(String movieId) async {
-    try {
-      Map<String, String> parameter = {
-        'movie_id': movieId,
-        'with_cast': 'true',
-        'with_images': 'true',
-      };
-      Response response = await dio.get(
-        Endpoints.getMovieDetails,
-        queryParameters: parameter,
-      );
-      MovieDetailsResponseDto movieDetailsResponse = MovieDetailsResponseDto.fromJson(response.data);
-      if (movieDetailsResponse.status == 'ok') {
-        return movieDetailsResponse;
-      } else {
-        throw DioException(
-          requestOptions: response.requestOptions,
-          message: "Failed to load Movie Details",
-        );
-      }
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('connection Time out ');
-      } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('connection Time out');
-      }
-      rethrow;
-    }
-  }
-
   Future<MovieSuggestionResponseDto> getMovieSuggestion(String movieId) async {
     try {
       Map<String, String> parameter = {

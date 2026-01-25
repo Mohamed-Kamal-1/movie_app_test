@@ -8,7 +8,8 @@ class ProfileInitialState extends ProfileScreenState {}
 class ProfileLoadingState extends ProfileScreenState {}
 class ProfileErrorState extends ProfileScreenState {
   String errorMessage;
-  ProfileErrorState(this.errorMessage);
+  Exception? exception;
+  ProfileErrorState(this.errorMessage, {this.exception});
 }
 class ProfileSuccessState extends ProfileScreenState {
   ProfileResponseDto profile;

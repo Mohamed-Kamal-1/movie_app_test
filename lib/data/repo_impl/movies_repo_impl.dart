@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/data/data_source/movies_list_data_source.dart';
+import 'package:movie_app/domain/api_result.dart';
 import 'package:movie_app/domain/model/movie_model.dart';
 
 import '../../domain/repos/movies_repo.dart';
@@ -11,11 +12,11 @@ class MoviesRepoImpl implements MoviesRepo {
   MoviesRepoImpl(this.moviesListDataSource);
 
   @override
-  Future<List<MovieModel>> getMoviesList(String? dateAdded,String? queryTerm,String? limit) async {
+  Future<Result<List<MovieModel>>> getMoviesList(String? dateAdded,String? queryTerm,String? limit) async {
     return await moviesListDataSource.getMoviesList(dateAdded,queryTerm,limit);
   }
   @override
-  Future<List<MovieModel>> getMoviesListByGenres(String genre) {
+  Future<Result<List<MovieModel>>> getMoviesListByGenres(String genre) {
     return moviesListDataSource.getMoviesListByGenres(genre);
   }
   @override

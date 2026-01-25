@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:movie_app/domain/api_result.dart';
 import 'package:movie_app/domain/model/movie_model.dart';
 
 import '../../../../domain/use_case/movies_list.dart';
@@ -19,23 +20,30 @@ class BrowseCubit extends Cubit<BrowseState> {
   Future<void> loadMovies() async {
     emit(BrowseLoading());
 
-    try {
-      allMovies = await moviesListUseCase.getMoviesList(dateAdded: "2025");
 
-      /// Load Genres
+    Result<List<MovieModel>> response = await moviesListUseCase.getMoviesList(
+        dateAdded: "2025");
+
+
+    switch (response) {
+      case Success<List<MovieModel>>():
+        {
+          allMovies = response.data;
+          emit(BrowseSuccess(movies: filteredMovies, genres: genres,
+            selectedGenre: "All",));
+        }
+
+      case Failure<List<MovieModel>>():
+        {
+          emit(BrowseError(errorMessage: response.exception));
+        }
+    }
+
       _extractGenres();
 
       filteredMovies = List.from(allMovies);
-
-      emit(BrowseLoaded(
-        movies: filteredMovies,
-        genres: genres,
-        selectedGenre: "All",
-      ));
-    } catch (e) {
-      emit(BrowseError(moviesListUseCase.getErrorMessage()));
-    }
   }
+
 
   void _extractGenres() {
     genres = ["All"];
@@ -58,7 +66,7 @@ class BrowseCubit extends Cubit<BrowseState> {
           .toList();
     }
 
-    emit(BrowseLoaded(
+    emit(BrowseSuccess(
       movies: filteredMovies,
       genres: genres,
       selectedGenre: selected,
@@ -68,16 +76,26 @@ class BrowseCubit extends Cubit<BrowseState> {
   Future<void> searchMovies(String title) async {
     emit(BrowseLoading());
 
-    try {
-      filteredMovies = await moviesListUseCase.getMoviesList(queryTerm: title);
 
-      emit(BrowseLoaded(
-        movies: filteredMovies,
-        genres: genres,
-        selectedGenre: "All",
-      ));
-    } catch (e) {
-      emit(BrowseError(moviesListUseCase.getErrorMessage()));
+    Result<List<MovieModel>> response = await moviesListUseCase.getMoviesList(
+        queryTerm: title);
+
+
+    switch (response) {
+      case Success<List<MovieModel>>():
+        {
+          filteredMovies = response.data;
+          emit(BrowseSuccess(
+            movies: filteredMovies,
+            genres: genres,
+            selectedGenre: "All",
+          ));
+        }
+      case Failure<List<MovieModel>>():
+        {
+          BrowseError(errorMessage: response.exception);
+        }
     }
+
   }
 }

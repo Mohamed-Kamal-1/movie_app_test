@@ -7,9 +7,9 @@ class HomeInitialState extends HomeScreenState {}
 class HomeLoadingState extends HomeScreenState {}
 
 class HomeErrorState extends HomeScreenState {
-  String? errorMessage;
+  Exception errorMessage;
 
-  HomeErrorState({this.errorMessage});
+  HomeErrorState({required this.errorMessage});
 }
 
 class HomeSuccessState extends HomeScreenState {

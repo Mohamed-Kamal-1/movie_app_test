@@ -10,6 +10,7 @@ import 'package:movie_app/presentation/ui/home_screen/cubit/home_screen_view_mod
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/rating_widget.dart';
 
 import '../../../../../core/colors/app_color.dart';
+import '../../../../../core/extention/error_extention.dart';
 import '../../widgets/home_shimmer_widget.dart';
 
 class AvailableNowSection extends StatefulWidget {
@@ -56,8 +57,8 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
         if (state is HomeErrorState) {
           return Center(
             child: Text(
-              state.errorMessage ?? "Error",
-              style: context.fonts.bodyMedium?.copyWith(color: AppColor.white),
+              context.getErrorMessage(state.errorMessage),
+              style: context.fonts.bodyMedium?.copyWith(color: Colors.red),
             ),
           );
         }
@@ -71,7 +72,7 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                   return Positioned.fill(
                     child: CachedNetworkImage(
                       fit: BoxFit.fill,
-                      imageUrl: state.moviesList![value].largeCoverImage ?? "",
+                      imageUrl: state.moviesList?[value].largeCoverImage ?? "",
                       placeholder: (context, url) => const Center(
                         child: CircularProgressIndicator(
                           color: AppColor.yellow,
@@ -131,13 +132,10 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    state.moviesList![index].id = context
-                                        .read<HomeScreenViewModel>()
-                                        .moviedId;
                                     Navigator.pushNamed(
                                       context,
                                       AppRoutes.DetailsScreen.name,
-                                      arguments: state.moviesList![index].id
+                                      arguments: state.moviesList?[index].id
                                           .toString(),
                                     );
                                   },
@@ -145,7 +143,7 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                                     fit: BoxFit.fill,
                                     imageUrl:
                                         state
-                                            .moviesList![index]
+                                            .moviesList?[index]
                                             .mediumCoverImage ??
                                         "",
                                     placeholder: (context, url) => const Center(
@@ -165,9 +163,9 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                               ),
                               RatingWidget(
                                 rate: state
-                                    .moviesList![currentPage.value]
-                                    .rating!
-                                    .toStringAsFixed(1),
+                                    .moviesList?[currentPage.value]
+                                    .rating
+                                    ?.toStringAsFixed(1),
                               ),
                             ],
                           ),

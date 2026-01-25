@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:movie_app/domain/api_result.dart';
 import 'package:movie_app/domain/model/movie_model.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/search_tab/cubit/search_screen_state.dart';
 
@@ -14,24 +15,28 @@ class SearchScreenViewModel extends Cubit<SearchScreenState> {
 
   Future<void> getMoviesListByTitle(String title) async {
     _lastQuery = title;
-    var errorMessage = moviesListUseCase.getErrorMessage();
     if (title.isEmpty) {
       emit(SearchEmptyState(isEmpty: true));
       return;
     }
-    try {
       emit(SearchLoadingState());
-      List<MovieModel> response = await moviesListUseCase.getMoviesList(queryTerm: _lastQuery);
+    Result<List<MovieModel>> response = await moviesListUseCase.getMoviesList(
+        queryTerm: _lastQuery);
+
       if (_lastQuery != title) return;
 
-      if (response.isEmpty) {
-        emit(SearchErrorState(errorMessage: errorMessage));
-      } else {
-        emit(SearchSuccessState(moviesList: response));
-      }
-    } catch (e) {
-      if (_lastQuery != title) return;
-      emit(SearchErrorState(errorMessage: e.toString()));
+    switch (response) {
+      case Success<List<MovieModel>>():
+        {
+          emit(SearchSuccessState(moviesList: response.data));
+        }
+
+      case Failure<List<MovieModel>>():
+        {
+          emit(SearchErrorState(errorMessage: response.exception));
+        }
     }
+
+
   }
 }

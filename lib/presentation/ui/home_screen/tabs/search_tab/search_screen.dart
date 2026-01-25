@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/di/di.dart';
+import 'package:movie_app/core/extention/error_extention.dart';
 import 'package:movie_app/core/images/app_image.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/search_tab/cubit/search_screen_state.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/search_tab/cubit/search_screen_view_model.dart';
-
 import 'package:movie_app/presentation/ui/movies_widget.dart';
 
 import 'app_bar_sear_screen.dart';
@@ -52,7 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   final errorState = state as SearchErrorState;
                   return Center(
                     child: Text(
-                      errorState.errorMessage!,
+                      context.getErrorMessage(errorState.errorMessage),
                       style: const TextStyle(color: Colors.white),
                     ),
                   );

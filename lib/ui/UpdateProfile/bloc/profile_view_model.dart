@@ -5,6 +5,7 @@ import 'package:movie_app/domain/use_case/profile_use_case.dart';
 import 'package:movie_app/domain/use_case/update_profile_use_case.dart';
 import 'package:movie_app/ui/UpdateProfile/bloc/profile_screen_state.dart';
 
+import '../../../domain/api_result.dart';
 import '../../../domain/model/movie_model.dart';
 import '../../../domain/use_case/movies_list.dart';
 
@@ -55,17 +56,21 @@ class ProfileViewModel extends Cubit<ProfileScreenState> {
 
   Future<void> getProfileMovies(String dateAdded) async {
     emit(ProfileLoadingState());
-    try {
-      final response = await moviesListUseCase.getMoviesList(
+
+    final response = await moviesListUseCase.getMoviesList(
         dateAdded: dateAdded,
       );
-      if (response.isEmpty) {
-        emit(ProfileMoviesListLoaded([]));
-      } else {
-        emit(ProfileMoviesListLoaded(response));
-      }
-    } catch (e) {
-      emit(ProfileErrorState(e.toString()));
+
+    switch (response) {
+      case Success<List<MovieModel>>():
+        {
+          emit(ProfileMoviesListLoaded(response.data));
+        }
+
+      case Failure<List<MovieModel>>():
+        {
+          emit(ProfileErrorState('', exception: response.exception));
+        }
     }
   }
 }

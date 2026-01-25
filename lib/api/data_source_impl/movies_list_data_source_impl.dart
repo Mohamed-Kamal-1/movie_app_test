@@ -1,5 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/api/api_manager.dart';
+import 'package:movie_app/api/execute_api.dart';
+import 'package:movie_app/domain/api_result.dart';
 import 'package:movie_app/domain/model/movie_model.dart';
 
 import '../../data/data_source/movies_list_data_source.dart';
@@ -14,18 +16,20 @@ class MoviesListDataSourceImpl implements MoviesListDataSource {
   MoviesListDataSourceImpl(this.apiManager);
 
   @override
-  Future<List<MovieModel>> getMoviesList(String? dateAdded, String? queryTerm,
+  Future<Result<List<MovieModel>>> getMoviesList(String? dateAdded,
+      String? queryTerm,
       String? limit) async {
-    MovieResponseDto response = await apiManager.getMoviesList(
-        dateAdded: dateAdded ?? 'date_added',
-        queryTerm: queryTerm ?? '0',
-        limit: limit ?? '20');
-    response.statusMessage = errorMessage;
-    response.code = statusCode;
-    return response.data?.movies
-            ?.map((moviesDto) => moviesDto.getMoviesList())
-            .toList() ??
-        [];
+    return executeApi(() async {
+      MovieResponseDto response = await apiManager.getMoviesList(
+          dateAdded: dateAdded ?? 'date_added',
+          queryTerm: queryTerm ?? '0',
+          limit: limit ?? '20');
+      return response.data?.movies
+          ?.map((moviesDto) => moviesDto.getMoviesList())
+          .toList() ??
+          [];
+    },);
+
   }
 
   @override
@@ -40,14 +44,17 @@ class MoviesListDataSourceImpl implements MoviesListDataSource {
 
 
   @override
-  Future<List<MovieModel>> getMoviesListByGenres(String genre) async {
-    MovieResponseDto response = await apiManager.getMoviesListByGenres(genre);
-    response.statusMessage = errorMessage;
-    response.code = statusCode;
-    return response.data?.movies
-            ?.map((moviesDto) => moviesDto.getMoviesList())
-            .toList() ??
-        [];
+  Future<Result<List<MovieModel>>> getMoviesListByGenres(String genre) async {
+    return executeApi(() async{
+      MovieResponseDto response = await apiManager.getMoviesListByGenres(genre);
+      response.statusMessage = errorMessage;
+      response.code = statusCode;
+      return response.data?.movies
+          ?.map((moviesDto) => moviesDto.getMoviesList())
+          .toList() ??
+          [];
+    },);
+
   }
 
 }

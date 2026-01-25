@@ -5,16 +5,18 @@ abstract class BrowseState {}
 class BrowseLoading extends BrowseState {}
 
 class BrowseError extends BrowseState {
-  final String message;
-  BrowseError(this.message);
+  final Exception errorMessage;
+
+  // BrowseError(this.message, {required this.exceptionMessage});
+  BrowseError({required this.errorMessage});
 }
 
-class BrowseLoaded extends BrowseState {
+class BrowseSuccess extends BrowseState {
   final List<MovieModel> movies;
   final List<String> genres;
   final String selectedGenre;
 
-  BrowseLoaded({
+  BrowseSuccess({
     required this.movies,
     required this.genres,
     required this.selectedGenre,

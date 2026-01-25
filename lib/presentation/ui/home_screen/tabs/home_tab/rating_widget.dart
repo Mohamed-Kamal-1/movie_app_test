@@ -4,7 +4,7 @@ import 'package:movie_app/extensions/extension.dart';
 import '../../../../../core/colors/app_color.dart';
 
 class RatingWidget extends StatelessWidget {
-  final String rate;
+  final String? rate;
 
   const RatingWidget({super.key, required this.rate});
 
@@ -23,7 +23,7 @@ class RatingWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(rate, style: context.fonts.titleSmall),
+          Text(rate ?? '', style: context.fonts.titleSmall),
           const Icon(Icons.star, color: AppColor.goldenYellow),
         ],
       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/SharedPreferences/auth_shared_preferences.dart';
+import 'package:movie_app/SharedPreferences/language_shared_preferences.dart';
 import 'package:movie_app/core/app_theme/app_theme.dart';
 import 'package:movie_app/core/routes/app_routes.dart';
 import 'package:movie_app/presentation/OnBoarding/basic_on_boarding.dart';
@@ -8,30 +10,30 @@ import 'package:movie_app/presentation/initial_route.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/home_tab.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/profile_tab/profile.dart';
 import 'package:movie_app/ui/Register/register.dart';
-import 'package:movie_app/ui/details_screen/details_screen.dart';
 import 'package:movie_app/ui/UpdateProfile/update_profile_screen.dart';
+import 'package:movie_app/ui/details_screen/details_screen.dart';
 import 'package:movie_app/ui/forget_password_screen/forget_screen.dart';
-import 'package:movie_app/ui/user_profile_Screen/user_profile_screen.dart';
 import 'package:movie_app/ui/login_screen/login_screen.dart';
+import 'package:movie_app/ui/user_profile_Screen/user_profile_screen.dart';
+import 'package:provider/provider.dart';
+
 import 'api/my_bloc_observer.dart';
 import 'bloc/language_provider.dart';
-import 'package:provider/provider.dart';
 import 'core/di/di.dart';
-import 'package:movie_app/SharedPreferences/language_shared_preferences.dart';
-import 'package:movie_app/SharedPreferences/auth_shared_preferences.dart';
 
-void main() async {
+void main()  {
   configureDependencies();
   Bloc.observer = MyBlocObserver();
-  WidgetsFlutterBinding.ensureInitialized();
-  await AppSharedPreferences.init();
-  await AuthSharedPreferences.init();
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => LanguageProvider(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await AppSharedPreferences.init();
+  // await AuthSharedPreferences.init();
+  // runApp(
+  //   ChangeNotifierProvider(
+  //     create: (context) => LanguageProvider(),
+  //     child: const MyApp(),
+  //   ),
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -43,11 +45,10 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.Theme,
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.InitialRoute.name,
+      initialRoute: AppRoutes.HomeTab.name,
       routes: {
         AppRoutes.HomeTab.name: (context) => const HomeTab(),
         AppRoutes.InitialRoute.name: (context) => const InitialRoute(),
-        AppRoutes.ProfileTab.name: (context) => ProfileTab(movieId: 0,),
         AppRoutes.OnBoardingScreen.name: (context) => const OnBoardingScreen(),
         AppRoutes.BasicOnBoarding.name: (context) => const BasicOnBoarding(),
         AppRoutes.UpdateProfile.name: (context) => UpdateProfileScreen(),

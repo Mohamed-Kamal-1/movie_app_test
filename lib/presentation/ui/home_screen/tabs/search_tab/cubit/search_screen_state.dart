@@ -7,9 +7,9 @@ class SearchInitialState extends SearchScreenState {}
 class SearchLoadingState extends SearchScreenState {}
 
 class SearchErrorState extends SearchScreenState {
-  String? errorMessage;
+  Exception errorMessage;
 
-  SearchErrorState({this.errorMessage});
+  SearchErrorState({required this.errorMessage});
 }
 
 class SearchSuccessState extends SearchScreenState {

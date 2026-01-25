@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/core/extention/error_extention.dart';
+
 import '../../../../../core/colors/app_color.dart';
 import '../../../../../core/di/di.dart';
 import '../../../../../core/routes/app_routes.dart';
@@ -34,13 +36,13 @@ class BrowseScreen extends StatelessWidget {
                       if (state is BrowseError) {
                         return Center(
                           child: Text(
-                            state.message,
+                            context.getErrorMessage(state.errorMessage),
                             style: const TextStyle(color: Colors.red),
                           ),
                         );
                       }
 
-                      if (state is BrowseLoaded) {
+                      if (state is BrowseSuccess) {
                         return Column(
                           children: [
                             /// GENRE CHIPS

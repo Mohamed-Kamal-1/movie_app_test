@@ -1,9 +1,11 @@
+import 'package:movie_app/domain/api_result.dart';
+
 import '../model/movie_model.dart';
 
 abstract interface class MoviesRepo{
 
-  Future<List<MovieModel>> getMoviesList(String? dateAdded, String? queryTerm,String? limit);
-  Future<List<MovieModel>> getMoviesListByGenres(String genre);
-  String getErrorMessage();
-  String getErrorStatusCode();
+  Future<Result<List<MovieModel>>> getMoviesList(String? dateAdded,
+      String? queryTerm, String? limit);
+  Future<Result<List<MovieModel>>> getMoviesListByGenres(String genre);
+
 }

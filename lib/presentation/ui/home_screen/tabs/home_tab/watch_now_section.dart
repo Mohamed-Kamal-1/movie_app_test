@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/di/di.dart';
+import 'package:movie_app/core/extention/error_extention.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/rating_widget.dart';
 
 import '../../../../../core/routes/app_routes.dart';
@@ -40,8 +41,8 @@ class _WatchNowSectionState extends State<WatchNowSection> {
         if (state is WatchNowError) {
           return Center(
             child: Text(
-              state.errorMessage!,
-              style: const TextStyle(color: Colors.white),
+              context.getErrorMessage(state.errorMessage),
+              style: const TextStyle(color: Colors.redAccent),
             ),
           );
         }
@@ -78,7 +79,7 @@ class _WatchNowSectionState extends State<WatchNowSection> {
                     ),
                   ),
                   RatingWidget(
-                    rate: state.moviesList![index].rating!.toStringAsFixed(1),
+                    rate: state.moviesList?[index].rating?.toStringAsFixed(1),
 
                   ),
                 ],
