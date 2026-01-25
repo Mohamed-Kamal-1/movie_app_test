@@ -27,8 +27,10 @@ class BrowseCubit extends Cubit<BrowseState> {
 
     switch (response) {
       case Success<List<MovieModel>>():
-        {
           allMovies = response.data;
+          _extractGenres();
+          filteredMovies = List.from(allMovies);
+        {
           emit(BrowseSuccess(movies: filteredMovies, genres: genres,
             selectedGenre: "All",));
         }
@@ -39,9 +41,9 @@ class BrowseCubit extends Cubit<BrowseState> {
         }
     }
 
-      _extractGenres();
 
-      filteredMovies = List.from(allMovies);
+
+
   }
 
 
