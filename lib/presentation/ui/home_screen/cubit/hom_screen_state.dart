@@ -26,9 +26,11 @@ class MoveToAnotherTabState extends HomeScreenState {
   MoveToAnotherTabState({this.index});
 }
 
-class changeGenre extends HomeScreenState {
-  final int? index;
-
-  changeGenre({this.index});
-}
+// class RatingState extends HomeScreenState {
+//   final String? id;
+//   final String? url;
+//   final num? rate;
+//
+//   RatingState({this.id, this.url, this.rate});
+// }
 

@@ -11,7 +11,7 @@ class MovieSuggestionRepoImpl implements MovieSuggestionRepo {
   MovieSuggestionRepoImpl(this.movieSuggestionDataSource);
 
   @override
-  Future<MovieSuggestionResponseDto> getMovieSuggestion(String movieId) {
+  Future<MovieSuggestionResponseDto> getMovieSuggestion(int movieId) {
     return movieSuggestionDataSource.getMovieSuggestion(movieId);
   }
 }

@@ -1,8 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/api/api_manager.dart';
 import 'package:movie_app/api/execute_api.dart';
+import 'package:movie_app/api/model/movie_list/Rating_dto.dart';
 import 'package:movie_app/domain/api_result.dart';
 import 'package:movie_app/domain/model/movie_model.dart';
+import 'package:movie_app/domain/model/rating_model.dart';
 
 import '../../data/data_source/movies_list_data_source.dart';
 import '../model/movie_list/movie_response_dto.dart';
@@ -32,23 +34,13 @@ class MoviesListDataSourceImpl implements MoviesListDataSource {
 
   }
 
-  @override
-  String getErrorMessage() {
-    return errorMessage ?? 'not Found';
-  }
 
-  @override
-  String getErrorStatusCode() {
-    return statusCode!;
-  }
 
 
   @override
   Future<Result<List<MovieModel>>> getMoviesListByGenres(String genre) async {
     return executeApi(() async{
       MovieResponseDto response = await apiManager.getMoviesListByGenres(genre);
-      response.statusMessage = errorMessage;
-      response.code = statusCode;
       return response.data?.movies
           ?.map((moviesDto) => moviesDto.getMoviesList())
           .toList() ??
@@ -56,5 +48,6 @@ class MoviesListDataSourceImpl implements MoviesListDataSource {
     },);
 
   }
+
 
 }

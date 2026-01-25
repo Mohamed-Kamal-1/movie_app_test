@@ -10,17 +10,14 @@ import 'custom_widget/details_content.dart';
 
 class DetailsScreen extends StatelessWidget {
   static const String routeName = 'DetailsScreen';
+  final int movieId;
 
-  const DetailsScreen({super.key});
+  const DetailsScreen({super.key, required this.movieId});
+
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)?.settings.arguments;
-    final movieId = args?.toString() ?? '';
-
-    final viewModel = getIt.get<DetailsScreenViewModel>();
-
-    if (movieId.isEmpty) {
+    if (movieId == 0) {
       return Scaffold(
         body: Center(
           child: Text('Movie ID not provided', style: AppStyles.regular16White),
@@ -29,23 +26,24 @@ class DetailsScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      body: BlocProvider<DetailsScreenViewModel>.value(
-        value: viewModel..getMovieDetailsAndSuggestions(movieId),
+      body: BlocProvider<DetailsScreenViewModel>(
+        create: (context) =>
+            getIt.get<DetailsScreenViewModel>()
+              ..getMovieDetailsAndSuggestions(movieId),
         child: BlocBuilder<DetailsScreenViewModel, DetailsScreenState>(
           buildWhen: (previous, current) {
-            // Only rebuild when state type changes or when we get new data
             return previous.runtimeType != current.runtimeType ||
                 current is MovieDetailsSuccessState ||
                 current is DetailsAndSuggestionsSuccessState ||
                 current is SuggestionsLoadingState;
           },
           builder: (context, state) {
-            // Initial loading - show full shimmer
+            final viewModel = context.read<DetailsScreenViewModel>();
+
             if (state is MovieDetailsLoadingState) {
               return const DetailsShimmerWidget();
             }
 
-            // Movie details loaded but suggestions still loading
             if (state is MovieDetailsSuccessState) {
               final movieDetails = state.movieDetailsResponse.data?.movie;
 

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/SharedPreferences/auth_shared_preferences.dart';
 import 'package:movie_app/api/endpoints/endpoints.dart';
@@ -22,24 +23,37 @@ import 'model/profile/update_profile_dto.dart';
 class ApiManager {
   final dio = Dio();
   final authDio = Dio();
+  final rateDio = Dio();
   static const String _baseUrl = 'https://yts.lt/api/v2/';
   static const String _authBaseUrl = 'https://route-movie-apis.vercel.app/';
+  static const String _rateBaseUrl = 'https://imdb236.p.rapidapi.com/';
 
   ApiManager() {
     dio.options.baseUrl = _baseUrl;
     dio.interceptors.add(
       PrettyDioLogger(
-        responseBody: true,
-        responseHeader: true,
-        error: true,
-        requestHeader: true,
-        requestBody: true,
+        responseBody: false,
+        // responseHeader: true,
+        error: false,
+        // requestHeader: true,
+        // requestBody: true,
       ),
     );
 
 
-    authDio.options.baseUrl = _authBaseUrl;
-    authDio.interceptors.add(
+    // authDio.options.baseUrl = _authBaseUrl;
+    // authDio.interceptors.add(
+    //   PrettyDioLogger(
+    //     responseBody: true,
+    //     responseHeader: true,
+    //     error: true,
+    //     requestHeader: true,
+    //     requestBody: true,
+    //   ),
+    // );
+
+    rateDio.options.baseUrl = _rateBaseUrl;
+    rateDio.interceptors.add(
       PrettyDioLogger(
         responseBody: true,
         responseHeader: true,
@@ -67,13 +81,8 @@ class ApiManager {
         return movieResponse;
   }
 
-  Future<RatingDto> getMovieRating(String imdbCode) async {
-    Response response = await dio.get(
-        'https://imdb236.p.rapidapi.com/api/imdb/$imdbCode/rating'
-    );
-    RatingDto ratingResponse = RatingDto.fromJson(response.data);
-    return ratingResponse;
-  }
+
+
 
   Future<MovieResponseDto> getMoviesListByGenres(String genre) async {
     Map<String, String> parameter = {'genre': genre, 'limit': '10',
@@ -85,8 +94,9 @@ class ApiManager {
       MovieResponseDto movieResponse = MovieResponseDto.fromJson(response.data);
         return movieResponse;
   }
-  Future<MovieDetailsResponseDto> getMovieDetails(String movieId) async {
-    Map<String, String> parameter = {
+
+  Future<MovieDetailsResponseDto> getMovieDetails(int movieId) async {
+    Map<String, Object> parameter = {
         'movie_id': movieId,
         'with_cast': 'true',
         'with_images': 'true',
@@ -145,9 +155,10 @@ class ApiManager {
       rethrow;
     }
   }
-  Future<MovieSuggestionResponseDto> getMovieSuggestion(String movieId) async {
+
+  Future<MovieSuggestionResponseDto> getMovieSuggestion(int movieId) async {
     try {
-      Map<String, String> parameter = {
+      Map<String, int> parameter = {
         'movie_id': movieId,
       };
       Response response = await dio.get(

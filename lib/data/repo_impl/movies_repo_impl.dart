@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:movie_app/data/data_source/movies_list_data_source.dart';
 import 'package:movie_app/domain/api_result.dart';
 import 'package:movie_app/domain/model/movie_model.dart';
+import 'package:movie_app/domain/model/rating_model.dart';
 
 import '../../domain/repos/movies_repo.dart';
 
@@ -16,17 +17,11 @@ class MoviesRepoImpl implements MoviesRepo {
     return await moviesListDataSource.getMoviesList(dateAdded,queryTerm,limit);
   }
   @override
-  Future<Result<List<MovieModel>>> getMoviesListByGenres(String genre) {
-    return moviesListDataSource.getMoviesListByGenres(genre);
-  }
-  @override
-  String getErrorMessage() {
-    return moviesListDataSource.getErrorMessage();
+  Future<Result<List<MovieModel>>> getMoviesListByGenres(String genre) async {
+    return await moviesListDataSource.getMoviesListByGenres(genre);
   }
 
-  @override
-  String getErrorStatusCode() {
-    return moviesListDataSource.getErrorStatusCode();
-  }
+
+
 
 }

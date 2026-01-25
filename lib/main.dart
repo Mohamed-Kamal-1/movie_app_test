@@ -56,7 +56,6 @@ class MyApp extends StatelessWidget {
         AppRoutes.LoginScreen.name: (context) => const LoginScreen(),
         AppRoutes.ForgetScreen.name: (context) => const ForgetScreen(),
         AppRoutes.RegisterScreen.name: (context) => const RegisterScreen(),
-        AppRoutes.DetailsScreen.name: (context) => const DetailsScreen(),
       },
     );
   }

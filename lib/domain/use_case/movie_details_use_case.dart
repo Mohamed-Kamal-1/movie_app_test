@@ -8,7 +8,7 @@ class MovieDetailsUseCase {
 
   MovieDetailsUseCase(this.movieDetailsRepo);
 
-  Future<MovieDetailsResponseDto> getMovieDetails(String movieId) async {
+  Future<MovieDetailsResponseDto> getMovieDetails(int movieId) async {
     return await movieDetailsRepo.getMovieDetails(movieId);
   }
 }

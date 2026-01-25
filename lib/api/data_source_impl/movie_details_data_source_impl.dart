@@ -11,7 +11,7 @@ class MovieDetailsDataSourceImpl implements MovieDetailsDataSource {
   MovieDetailsDataSourceImpl(this.apiManager);
 
   @override
-  Future<MovieDetailsResponseDto> getMovieDetails(String movieId) async {
+  Future<MovieDetailsResponseDto> getMovieDetails(int movieId) async {
     return await apiManager.getMovieDetails(movieId);
   }
 }

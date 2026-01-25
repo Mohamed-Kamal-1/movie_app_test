@@ -22,7 +22,7 @@ class DetailsScreenViewModel extends Cubit<DetailsScreenState> {
     this.favouriteUseCase,
   ) : super(DetailsScreenInitialState());
 
-  Future<void> getMovieDetailsAndSuggestions(String movieId) async {
+  Future<void> getMovieDetailsAndSuggestions(int movieId) async {
     // Start loading movie details first
     emit(MovieDetailsLoadingState());
     
@@ -36,7 +36,7 @@ class DetailsScreenViewModel extends Cubit<DetailsScreenState> {
   MovieSuggestionResponseDto? _cachedSuggestions;
   MovieDetailsResponseDto? _cachedDetails;
 
-  Future<void> getMovieDetails(String movieId) async {
+  Future<void> getMovieDetails(int movieId) async {
     try {
       final movieDetailsResponse = await movieDetailsUseCase.getMovieDetails(movieId);
 
@@ -64,7 +64,7 @@ class DetailsScreenViewModel extends Cubit<DetailsScreenState> {
     }
   }
 
-  Future<void> getMovieSuggestions(String movieId) async {
+  Future<void> getMovieSuggestions(int movieId) async {
     try {
       // Get current state to preserve movie details if already loaded
       final currentState = state;

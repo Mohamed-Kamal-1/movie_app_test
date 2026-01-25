@@ -78,10 +78,10 @@ class _WatchNowSectionState extends State<WatchNowSection> {
                       ),
                     ),
                   ),
-                  RatingWidget(
-                    rate: state.moviesList?[index].rating?.toStringAsFixed(1),
-
-                  ),
+                  // RatingWidget(
+                  //   rate: state.moviesList?[index].rating?.toStringAsFixed(1),
+                  //
+                  // ),
                 ],
               );
             },

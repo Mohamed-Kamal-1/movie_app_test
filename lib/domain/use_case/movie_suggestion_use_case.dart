@@ -8,7 +8,7 @@ class MovieSuggestionUseCase {
 
   MovieSuggestionUseCase(this.movieSuggestionRepo);
 
-  Future<MovieSuggestionResponseDto> getMovieSuggestion(String movieId) async {
+  Future<MovieSuggestionResponseDto> getMovieSuggestion(int movieId) async {
     return await movieSuggestionRepo.getMovieSuggestion(movieId);
   }
 }

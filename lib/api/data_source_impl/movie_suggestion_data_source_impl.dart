@@ -11,7 +11,7 @@ class MovieSuggestionDataSourceImpl implements MovieSuggestionDataSource {
   MovieSuggestionDataSourceImpl(this.apiManager);
 
   @override
-  Future<MovieSuggestionResponseDto> getMovieSuggestion(String movieId) async {
+  Future<MovieSuggestionResponseDto> getMovieSuggestion(int movieId) async {
     return await apiManager.getMovieSuggestion(movieId);
   }
 }

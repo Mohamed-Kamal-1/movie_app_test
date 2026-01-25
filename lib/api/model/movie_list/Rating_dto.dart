@@ -1,7 +1,9 @@
+import 'package:movie_app/domain/model/rating_model.dart';
+
 class RatingDto {
   RatingDto({
-      this.id, 
-      this.url, 
+      this.id,
+      this.url,
       this.averageRating, 
       this.numVotes,});
 
@@ -25,4 +27,11 @@ class RatingDto {
     return map;
   }
 
+  RatingModel convertToRating() {
+    return RatingModel(
+      url: url,
+      id: id,
+      averageRating: averageRating,
+    );
+  }
 }

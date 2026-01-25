@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/di/di.dart';
 import 'package:movie_app/core/images/app_image.dart';
-import 'package:movie_app/core/routes/app_routes.dart';
 import 'package:movie_app/extensions/extension.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/hom_screen_state.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/home_screen_view_model.dart';
 import 'package:movie_app/presentation/ui/home_screen/tabs/home_tab/rating_widget.dart';
+import 'package:movie_app/ui/details_screen/details_screen.dart';
 
 import '../../../../../core/colors/app_color.dart';
 import '../../../../../core/extention/error_extention.dart';
@@ -132,11 +132,12 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.pushNamed(
+                                    Navigator.push(
                                       context,
-                                      AppRoutes.DetailsScreen.name,
-                                      arguments: state.moviesList?[index].id
-                                          .toString(),
+                                        MaterialPageRoute(builder: (context) =>
+                                            DetailsScreen(
+                                                movieId: state.moviesList?[index]
+                                                    .id?.toInt() ?? 0),)
                                     );
                                   },
                                   child: CachedNetworkImage(
@@ -161,12 +162,13 @@ class _AvailableNowSectionState extends State<AvailableNowSection> {
                                   ),
                                 ),
                               ),
-                              RatingWidget(
-                                rate: state
-                                    .moviesList?[currentPage.value]
-                                    .rating
-                                    ?.toStringAsFixed(1),
-                              ),
+
+                              // RatingWidget(
+                              //   rate: state
+                              //       .moviesList?[currentPage.value]
+                              //       .rating
+                              //       ?.toStringAsFixed(1),
+                              // ),
                             ],
                           ),
                         );

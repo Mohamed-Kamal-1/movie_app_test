@@ -11,7 +11,7 @@ class MovieDetailsRepoImpl implements MovieDetailsRepo {
   MovieDetailsRepoImpl(this.movieDetailsDataSource);
 
   @override
-  Future<MovieDetailsResponseDto> getMovieDetails(String movieId) {
+  Future<MovieDetailsResponseDto> getMovieDetails(int movieId) {
     return movieDetailsDataSource.getMovieDetails(movieId);
   }
 }

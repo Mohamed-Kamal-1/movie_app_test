@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movie_app/domain/api_result.dart';
 import 'package:movie_app/domain/model/movie_model.dart';
+import 'package:movie_app/domain/model/rating_model.dart';
 import 'package:movie_app/presentation/ui/home_screen/cubit/hom_screen_state.dart';
 
 import '../../../../domain/use_case/movies_list.dart';
