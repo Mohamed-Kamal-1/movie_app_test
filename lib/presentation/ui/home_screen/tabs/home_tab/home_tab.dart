@@ -24,7 +24,7 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     viewModel = getIt.get<HomeScreenViewModel>();
-    tabs = [HomeScreen(), SearchScreen(), BrowseScreen(), ProfileTab()];
+    tabs = [const HomeScreen(), const SearchScreen(), const BrowseScreen(), const ProfileTab()];
   }
 
   @override

@@ -66,10 +66,10 @@ class _SearchScreenState extends State<SearchScreen> {
                       moviesLength: state.moviesList?.length ?? 0,
                       imageBuilder: (index) {
                         imageIndex = index;
-                        return state.moviesList![index].mediumCoverImage;
+                        return state.moviesList?[index].mediumCoverImage;
                       },
-                      rating: successState.moviesList![imageIndex].rating!
-                          .toStringAsFixed(1),
+                      rating: successState.moviesList?[imageIndex].rating
+                          ?.toStringAsFixed(1),
                     );
                   } else {
                     return Center(

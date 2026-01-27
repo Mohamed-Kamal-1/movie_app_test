@@ -5,6 +5,12 @@ import '../colors/app_color.dart';
 
 class AppTheme {
   static ThemeData Theme = ThemeData(
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders:{
+        TargetPlatform.android: const CupertinoPageTransitionsBuilder(),
+        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
+      }
+    ),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColor.black,
       foregroundColor: AppColor.yellow,

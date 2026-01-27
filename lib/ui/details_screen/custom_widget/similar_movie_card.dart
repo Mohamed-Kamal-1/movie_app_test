@@ -13,12 +13,11 @@ class SimilarMovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return  GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
+        Navigator.push(
           context,
-          DetailsScreen.routeName,
-          arguments: movie.id.toString(),
-        );
-      },
+          MaterialPageRoute(
+            builder: (context) => DetailsScreen(movieId: movie.id ?? 0),
+          ));},
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Stack(
@@ -44,7 +43,7 @@ class SimilarMovieCard extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withOpacity(0.8),
+                      Colors.black.withValues(alpha: 0.8),
                     ],
                   ),
                 ),

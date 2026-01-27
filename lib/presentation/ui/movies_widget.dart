@@ -39,7 +39,7 @@ class _MoviesWidgetState extends State<MoviesWidget> {
               return Stack(
                 children: [
                   CachedNetworkImage(
-                    imageUrl: widget.imageBuilder!(index)!,
+                    imageUrl: widget.imageBuilder!(index) ?? '',
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(color: AppColor.yellow),
                     ),

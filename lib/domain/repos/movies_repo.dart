@@ -1,7 +1,6 @@
 import 'package:movie_app/domain/api_result.dart';
 
 import '../model/movie_model.dart';
-import '../model/rating_model.dart';
 
 abstract interface class MoviesRepo{
 
